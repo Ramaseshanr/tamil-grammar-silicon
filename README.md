@@ -62,6 +62,15 @@ cite working notes that are not part of this repository.
   table is fetched by `tools/fetch_freq.sh` (it cannot be rebuilt from Wikipedia exactly). See
   [docs/REBUILD.md](docs/REBUILD.md).
 
+## How this was made
+
+The research question, the choice of sources, and every judgement about what the grammar says are the author's.
+The code, specifications and documents were developed in working sessions with Claude Code (Anthropic's coding
+agent), which wrote and ran much of the code and drafted much of the prose. Because of that, nothing here rests on
+the assistant's word: every figure is a row of [paper/CLAIMS.tsv](paper/CLAIMS.tsv) with the command that
+regenerates it, and the rebuild checks its outputs byte for byte. The verse quotations have been checked by the
+author against the printed text; the readings of the grammar have not yet had outside review.
+
 ## Licences
 
 Apache-2.0 for code and HDL, CC BY 4.0 for specs and docs, and each data source
