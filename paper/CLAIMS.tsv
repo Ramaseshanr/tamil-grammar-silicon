@@ -1,46 +1,46 @@
 id	value	claim	command	sources	verified_at
-tlp1.roundtrip	1837644	tokens round-tripped Unicode->TLP1->Unicode	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	0f3b120
-tlp1.mismatches	0	round-trip mismatches, all corpora	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	0f3b120
-tlp1.malformed_pct	3.00	% of round-trip-verified gold surfaces that are malformed Tamil	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	0f3b120
-foma.rules	28	rewrite rules in tamil-noun.foma	python3 tools/phon_rules.py count	tools/phon_rules.py	9f205bd
-foma.dead	11	of those 28 that never fire on the grid	TAMILOS_GRID=data/derived/nouns_grid.tsv python3 tools/phon_rules.py orth	tools/phon_rules.py	9f205bd
-foma.fidelity	1554407/1554418	cells where the reimplementation matches the gold (99.9993%)	TAMILOS_GRID=data/derived/nouns_grid.tsv python3 tools/phon_rules.py orth	tools/phon_rules.py	9f205bd
-params.orth	1637	orthographic parameters: 28 rules + 1609 allomorphs	python3 tools/phon_rules.py count	tools/phon_rules.py	9f205bd
-params.phon	113	phonemic parameters: 10 rules + 23 morphemes + 20x4	python3 tools/phon_rules.py count	tools/phon_rules.py	9f205bd
-params.no_content	6	of the 28 rules with no phonemic counterpart at all	see docs/RULES.md, the table row marked none (R1 R2 R7 R11 R15 R101; counted by hand, no command prints it)	tools/phon_rules.py	9f205bd
-derive.cells	99.23	% of 1,554,418 cells where a correct surface is derived	python3 tools/phon_rules.py phon	tools/phon_rules.py	9f205bd
-derive.recall	95.64	surface recall, every licensed variant generated	python3 tools/phon_rules.py phon	tools/phon_rules.py	9f205bd
-derive.prec_all	59.13	surface precision vs ThamizhiMorph, all variants	python3 tools/phon_rules.py phon	tools/phon_rules.py	9f205bd
-derive.prec_min	96.38	surface precision, one form per cell	TAMILOS_PHON_VARIANTS=min python3 tools/phon_rules.py phon	tools/phon_rules.py	9f205bd
-vik.alternant_pct	98.66	% of omitted surfaces that are vikarpam alternants (cell criterion)	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	9f205bd
-vik.failures	20429	genuine failures = 0.57% of 3,179,463 derived surfaces	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	9f205bd
-vik.prec_nannul	99.45	cell-level CEILING vs Nannul, not a precision: cannot see a non-word that shares a cell with a correct form	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	9f205bd
-grid.nouns	2303173->3824108	noun surfaces after vikarpam tagging (x1.50)	python3 tools/build_vikarpam_grid.py	tools/build_vikarpam_grid.py,tools/phon_rules.py	99784cd
-grid.verbs	1334572->1337014	verb surfaces after the vikuti seam	python3 tools/build_vikarpam_verbs.py	tools/build_vikarpam_verbs.py	99784cd
-hdl.core	132	LUT4 for tamil_noun_class, 0 flip-flops	cd hdl && ./build.sh	hdl/src,hdl/gen,hdl/syn	0f3b120
-hdl.datapath	196	LUT4 for tamil_noun_front, 36 flip-flops	cd hdl && ./build.sh	hdl/rtl,hdl/syn	0f3b120
-hdl.fmax	142.53	MHz on LFE5U-85F	cd hdl && ./build.sh	hdl/rtl,hdl/syn	0f3b120
-hdl.tb_stream	43647/43647	stems where the RTL agrees with the reference	cd hdl && ./build.sh	hdl/tb,hdl/rtl	0f3b120
-hdl.suffix_rom	1178	bytes: 805 pointers -> 186 distinct suffixes (SIZED, NOT BUILT)	python3 tools/gen_hdl.py	tools/gen_hdl.py	0f3b120
-classify.acc	99.89	% of stems the 49 contexts ASSIGN a class to (coverage, not correctness)	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	0f3b120
-ud.quadruples	2520	unique (lemma, Case, Number, form) in UD TTB+MWTT	python3 tools/eval_ud.py  (needs tools/fetch_ud_ttb.sh first)	tools/eval_ud.py,tools/fetch_ud_ttb.sh,data/gold/UD_Tamil-MWTT	ae45fbc
-ud.testable	740	of those whose lemma is in our inventory (1,780 are not)	python3 tools/eval_ud.py  (needs tools/fetch_ud_ttb.sh first)	tools/eval_ud.py,tools/fetch_ud_ttb.sh,data/gold/UD_Tamil-MWTT	ae45fbc
-ud.agreement	634/740	independent agreement on UD Tamil = 85.68% (a development score: causes were fixed from the same misses; first run 600/740 = 81.08%)	python3 tools/eval_ud.py	tools/eval_ud.py,tools/phon_rules.py	9f205bd
-ud.dative	57.3	% agreement on the dative - the worst case, 4 named causes	python3 tools/eval_ud.py --misses	tools/eval_ud.py,tools/phon_rules.py	9f205bd
-inam.unicode	0/3	இனம் classes that are a contiguous Tamil Unicode range	python3 tools/inam_ranges.py	tools/inam_ranges.py,tools/tlp1.py	0f3b120
-inam.tlp1	3/3	இனம் classes that are a single TLP1 mask	python3 tools/inam_ranges.py	tools/inam_ranges.py,tools/tlp1.py	0f3b120
-tolk.pirappiyal	21	nūṟpā vendored from Tolkāppiyam எழுத்ததிகாரம் பிறப்பியல், 0 non-Tamil tokens	python3 tools/vendor_tolkappiyam.py <pmuni0100.html>	tools/vendor_tolkappiyam.py,data/gold/tolkappiyam	99784cd
-tolk.places	6/6	stop+nasal pairs where TLP1's place field matches the articulator Tolkāppiyam names	python3 tools/check_pirappiyal.py	tools/check_pirappiyal.py,tools/tlp1.py,data/gold/tolkappiyam	0f3b120
-classify.exact	98.07	% of 1,552,669 slots where the class-derived forms equal the reference exactly	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	0f3b120
-classify.any	99.95	% of slots whose derived forms contain at least one correct form	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	0f3b120
-tf1.bundles	67	distinct noun bundle strings in the grid, from 18 atoms, giving 66 registers	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	0f3b120
-tf1.rows	1554418	grid rows covered by the TF1 noun codec, all round-tripping as atom sets	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	0f3b120
-tf1.injective	713	(class, bundle) pairs; the map to (class, register) stays injective, so the one set-level collision is harmless	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	0f3b120
-tf1.rom_bits	12	ROM address bits: class[4:0] plus a 7-bit dense bundle code	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	0f3b120
-tf1.guards	9/9	TF1 guards that fire: unknown atom, repeated atom, reserved bit, VOC, SG+PL, two cases, BEN without DAT, two sandhi, non-noun bundle	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	0f3b120
-tf1v.strings	715	distinct verb feature strings, from 45 atoms, giving 233 registers	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	0f3b120
-tf1v.exact	715/715	verb strings whose features round-trip exactly, under one global atom order	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	0f3b120
-tf1v.rows	1318782	verb grid rows covered by the TF1 verb codec	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	0f3b120
-tf1v.rom_bits	15	verb ROM address bits: class[4:0] plus a 10-bit dense bundle code	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	0f3b120
-tf1v.guards	18/18	TF1 verb guards that fire	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	0f3b120
-rebuild.manifest	16/16	files byte-identical after a rebuild of data/derived from a fresh clone (15 derived outputs and the frequency table); hdl/ regenerates unchanged	tools/rebuild_derived.sh  (about 5.5 minutes)	tools/rebuild_derived.sh,data/frozen,tools/generate_noun_grid.py,tools/phon_rules.py,tools/build_verbs.sh	f0bdcd2
+tlp1.roundtrip	1837644	tokens round-tripped Unicode->TLP1->Unicode	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	8e24ff4
+tlp1.mismatches	0	round-trip mismatches, all corpora	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	8e24ff4
+tlp1.malformed_pct	3.00	% of round-trip-verified gold surfaces that are malformed Tamil	python3 tools/validate_tlp1.py	tools/tlp1.py,tools/validate_tlp1.py	8e24ff4
+foma.rules	28	rewrite rules in tamil-noun.foma	python3 tools/phon_rules.py count	tools/phon_rules.py	8e24ff4
+foma.dead	11	of those 28 that never fire on the grid	TAMILOS_GRID=data/derived/nouns_grid.tsv python3 tools/phon_rules.py orth	tools/phon_rules.py	8e24ff4
+foma.fidelity	1554407/1554418	cells where the reimplementation matches the gold (99.9993%)	TAMILOS_GRID=data/derived/nouns_grid.tsv python3 tools/phon_rules.py orth	tools/phon_rules.py	8e24ff4
+params.orth	1637	orthographic parameters: 28 rules + 1609 allomorphs	python3 tools/phon_rules.py count	tools/phon_rules.py	8e24ff4
+params.phon	113	phonemic parameters: 10 rules + 23 morphemes + 20x4	python3 tools/phon_rules.py count	tools/phon_rules.py	8e24ff4
+params.no_content	6	of the 28 rules with no phonemic counterpart at all	see docs/RULES.md, the table row marked none (R1 R2 R7 R11 R15 R101; counted by hand, no command prints it)	tools/phon_rules.py	8e24ff4
+derive.cells	99.23	% of 1,554,418 cells where a correct surface is derived	python3 tools/phon_rules.py phon	tools/phon_rules.py	8e24ff4
+derive.recall	95.64	surface recall, every licensed variant generated	python3 tools/phon_rules.py phon	tools/phon_rules.py	8e24ff4
+derive.prec_all	59.13	surface precision vs ThamizhiMorph, all variants	python3 tools/phon_rules.py phon	tools/phon_rules.py	8e24ff4
+derive.prec_min	96.38	surface precision, one form per cell	TAMILOS_PHON_VARIANTS=min python3 tools/phon_rules.py phon	tools/phon_rules.py	8e24ff4
+vik.alternant_pct	98.66	% of omitted surfaces that are vikarpam alternants (cell criterion)	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	8e24ff4
+vik.failures	20429	genuine failures = 0.57% of 3,179,463 derived surfaces	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	8e24ff4
+vik.prec_nannul	99.45	cell-level CEILING vs Nannul, not a precision: cannot see a non-word that shares a cell with a correct form	python3 tools/phon_rules.py vikarpam	tools/phon_rules.py	8e24ff4
+grid.nouns	2303173->3824108	noun surfaces after vikarpam tagging (x1.50)	python3 tools/build_vikarpam_grid.py	tools/build_vikarpam_grid.py,tools/phon_rules.py	8e24ff4
+grid.verbs	1334572->1337014	verb surfaces after the vikuti seam	python3 tools/build_vikarpam_verbs.py	tools/build_vikarpam_verbs.py	8e24ff4
+hdl.core	132	LUT4 for tamil_noun_class, 0 flip-flops	cd hdl && ./build.sh	hdl/src,hdl/gen,hdl/syn	8e24ff4
+hdl.datapath	196	LUT4 for tamil_noun_front, 36 flip-flops	cd hdl && ./build.sh	hdl/rtl,hdl/syn	8e24ff4
+hdl.fmax	142.53	MHz on LFE5U-85F	cd hdl && ./build.sh	hdl/rtl,hdl/syn	8e24ff4
+hdl.tb_stream	43647/43647	stems where the RTL agrees with the reference	cd hdl && ./build.sh	hdl/tb,hdl/rtl	8e24ff4
+hdl.suffix_rom	1178	bytes: 805 pointers -> 186 distinct suffixes (SIZED, NOT BUILT)	python3 tools/gen_hdl.py	tools/gen_hdl.py	8e24ff4
+classify.acc	99.89	% of stems the 49 contexts ASSIGN a class to (coverage, not correctness)	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	8e24ff4
+ud.quadruples	2520	unique (lemma, Case, Number, form) in UD TTB+MWTT	python3 tools/eval_ud.py  (needs tools/fetch_ud_ttb.sh first)	tools/eval_ud.py,tools/fetch_ud_ttb.sh,data/gold/UD_Tamil-MWTT	8e24ff4
+ud.testable	740	of those whose lemma is in our inventory (1,780 are not)	python3 tools/eval_ud.py  (needs tools/fetch_ud_ttb.sh first)	tools/eval_ud.py,tools/fetch_ud_ttb.sh,data/gold/UD_Tamil-MWTT	8e24ff4
+ud.agreement	634/740	independent agreement on UD Tamil = 85.68% (a development score: causes were fixed from the same misses; first run 600/740 = 81.08%)	python3 tools/eval_ud.py	tools/eval_ud.py,tools/phon_rules.py	8e24ff4
+ud.dative	57.3	% agreement on the dative - the worst case, 4 named causes	python3 tools/eval_ud.py --misses	tools/eval_ud.py,tools/phon_rules.py	8e24ff4
+inam.unicode	0/3	இனம் classes that are a contiguous Tamil Unicode range	python3 tools/inam_ranges.py	tools/inam_ranges.py,tools/tlp1.py	8e24ff4
+inam.tlp1	3/3	இனம் classes that are a single TLP1 mask	python3 tools/inam_ranges.py	tools/inam_ranges.py,tools/tlp1.py	8e24ff4
+tolk.pirappiyal	21	nūṟpā vendored from Tolkāppiyam எழுத்ததிகாரம் பிறப்பியல், 0 non-Tamil tokens	python3 tools/vendor_tolkappiyam.py <pmuni0100.html>	tools/vendor_tolkappiyam.py,data/gold/tolkappiyam	8e24ff4
+tolk.places	6/6	stop+nasal pairs where TLP1's place field matches the articulator Tolkāppiyam names	python3 tools/check_pirappiyal.py	tools/check_pirappiyal.py,tools/tlp1.py,data/gold/tolkappiyam	8e24ff4
+classify.exact	98.07	% of 1,552,669 slots where the class-derived forms equal the reference exactly	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	8e24ff4
+classify.any	99.95	% of slots whose derived forms contain at least one correct form	TAMILOS_PAIRED=1 python3 tools/derive_nouns.py eval	tools/derive_nouns.py	8e24ff4
+tf1.bundles	67	distinct noun bundle strings in the grid, from 18 atoms, giving 66 registers	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	8e24ff4
+tf1.rows	1554418	grid rows covered by the TF1 noun codec, all round-tripping as atom sets	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	8e24ff4
+tf1.injective	713	(class, bundle) pairs; the map to (class, register) stays injective, so the one set-level collision is harmless	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	8e24ff4
+tf1.rom_bits	12	ROM address bits: class[4:0] plus a 7-bit dense bundle code	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	8e24ff4
+tf1.guards	9/9	TF1 guards that fire: unknown atom, repeated atom, reserved bit, VOC, SG+PL, two cases, BEN without DAT, two sandhi, non-noun bundle	python3 tools/validate_tf1.py	tools/tf1.py,tools/validate_tf1.py,spec/tf1_bundles.tsv	8e24ff4
+tf1v.strings	715	distinct verb feature strings, from 45 atoms, giving 233 registers	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	8e24ff4
+tf1v.exact	715/715	verb strings whose features round-trip exactly, under one global atom order	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	8e24ff4
+tf1v.rows	1318782	verb grid rows covered by the TF1 verb codec	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	8e24ff4
+tf1v.rom_bits	15	verb ROM address bits: class[4:0] plus a 10-bit dense bundle code	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	8e24ff4
+tf1v.guards	18/18	TF1 verb guards that fire	python3 tools/validate_tf1v.py	tools/tf1v.py,tools/tf1.py,tools/validate_tf1v.py,spec/tf1v_bundles.tsv	8e24ff4
+rebuild.manifest	16/16	files byte-identical after a rebuild of data/derived from a fresh clone (15 derived outputs and the frequency table); hdl/ regenerates unchanged	tools/rebuild_derived.sh  (about 5.5 minutes)	tools/rebuild_derived.sh,data/frozen,tools/generate_noun_grid.py,tools/phon_rules.py,tools/build_verbs.sh	8e24ff4
