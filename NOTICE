@@ -1,0 +1,32 @@
+tamil-grammar-silicon
+Copyright 2026 Ramaseshan Ramachandran
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE), except where
+LICENSES.md says a path is under different terms.
+
+It includes or is derived from:
+
+  ThamizhiMorph (fetched into data/gold/thamizhi-morph, not vendored) - Apache-2.0
+    Copyright 2020 Kengatharaiyer Sarveswaran, G. Dias, M. Butt (University of Moratuwa /
+    University of Konstanz). https://github.com/sarves/thamizhi-morph
+    The stem inventory, noun classes and suffix tables used as the evaluation reference and as
+    the source of hdl/vectors/stem_vectors.hex come from this work.
+
+  UD_Tamil-MWTT (data/gold/UD_Tamil-MWTT) - CC BY-SA 4.0
+    Sarveswaran, Krishnamurthy and Balasubramani. Kept in its own directory with its own terms.
+
+  Naṉṉūl index (data/gold/nannul) - CC BY-SA 4.0 and Project Madurai terms
+    Text of Pavaṇanti Munivar's Naṉṉūl (13th century, public domain) as transcribed on
+    ta.wikisource.org (CC BY-SA 4.0), and the word-split text of Project Madurai etext
+    pmuni0147 by Dr. Thomas Malten et al. (distributed with its header, see
+    data/gold/nannul/PROJECT_MADURAI_HEADER.txt).
+
+  Tolkāppiyam பிறப்பியல் (data/gold/tolkappiyam) - Project Madurai etext pmuni0100
+    Distributed with its header page intact, reproduced in pirappiyal.json.
+
+  A Progressive Grammar of Common Tamil (data/gold/arden, data/gold/arden1910)
+    Rev. A. H. Arden, 1910. Public domain. The OCR and paragraph index are this project's.
+
+Not redistributed, and not built on: UD_Tamil-TTB (CC BY-NC-SA 3.0; fetch it with
+tools/fetch_ud_ttb.sh), the University of Madras Tamil Lexicon (CC BY-NC-ND), and the
+Madurai Kamaraj / Tamil Virtual University scans of Naṉṉūl (consulted only).

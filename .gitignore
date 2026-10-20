@@ -1,0 +1,13 @@
+# Rebuilt by tools/rebuild_derived.sh, or fetched:
+data/derived/
+data/gold/thamizhi-morph/
+data/gold/UD_Tamil-TTB/
+data/gold/freq/tawiki_freq.tsv
+dist/
+hdl/target/
+hdl/tb/*.vvp
+hdl/syn/*.json
+hdl/syn/*.cfg
+*.pyc
+__pycache__/
+.DS_Store

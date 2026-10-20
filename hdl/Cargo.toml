@@ -1,0 +1,9 @@
+[package]
+name = "tamil_hdl"
+version = "0.1.0"
+edition = "2021"
+
+# Same generator as SanskritOS/hdl_synth: RustHDL blocks, simulated natively, emitted as
+# Verilog. That repository is not modified by anything here -- only the approach is reused.
+[dependencies]
+rust-hdl = "0.46.0"

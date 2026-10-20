@@ -1,0 +1,279 @@
+{
+ "_provenance": "Marker strings for tools/patch_gold.py (Arden 134, and the Naṉṉūl 181 guard). Learned 2026-09-29 by tools/derive_nouns.py under TLP1 draft 1 from data/derived/nouns_grid.tsv; no committed version of the learner reproduces this exact file (eight were tried). Byte values here are translated from draft 1 to draft 2 (0x60->0x61, 0x61->0x63, 0x62->0x65, 0x63->0x64, 0x64->0x60, 0x65->0x62: the five இடையினம் and ழ் places that moved); with that translation tools/patch_gold.py reproduces nouns_grid_arden.tsv byte for byte. The classifier and stemforms the original file also held are not here: nothing in the rebuild reads them.",
+ "markers": {
+  "noun+abl": [
+   "0155",
+   "0165016302534302",
+   "0165",
+   "610155",
+   "610165016302534302",
+   "610165"
+  ],
+  "noun+acc": [
+   "610d",
+   "0d",
+   "550d"
+  ],
+  "noun+dat": [
+   "02404002",
+   "404002",
+   "6102404002"
+  ],
+  "noun+dat+ben": [
+   "024040084000",
+   "61024040084000",
+   "4040084000"
+  ],
+  "noun+dat+pl": [
+   "02404002",
+   "6202404002"
+  ],
+  "noun+dat+pl+sandhic": [
+   "0240400241",
+   "620240400241"
+  ],
+  "noun+dat+pl+sandhik": [
+   "0240400240",
+   "620240400240"
+  ],
+  "noun+dat+pl+sandhip": [
+   "0240400244",
+   "620240400244"
+  ],
+  "noun+dat+pl+sandhit": [
+   "0240400243",
+   "620240400243"
+  ],
+  "noun+dat+sandhic": [
+   "0240400241",
+   "40400241",
+   "610240400241"
+  ],
+  "noun+dat+sandhik": [
+   "0240400240",
+   "40400240",
+   "610240400240"
+  ],
+  "noun+dat+sandhip": [
+   "0240400244",
+   "40400244",
+   "610240400244"
+  ],
+  "noun+dat+sandhit": [
+   "0240400243",
+   "40400243",
+   "610240400243"
+  ],
+  "noun+foc": [
+   "430855"
+  ],
+  "noun+gen": [
+   "0155",
+   "61004302",
+   "610155",
+   "55004302",
+   "004302",
+   "0155004302",
+   "62004302"
+  ],
+  "noun+inst": [
+   "0865",
+   "610865"
+  ],
+  "noun+loc": [
+   "0165",
+   "01420054",
+   "6101420054",
+   "610165"
+  ],
+  "noun+nom": [
+   ""
+  ],
+  "noun+nom+cmpr": [
+   "440c65"
+  ],
+  "noun+nom+foc": [
+   "430855"
+  ],
+  "noun+nom+sandhic": [
+   "41"
+  ],
+  "noun+nom+sandhik": [
+   "40",
+   "5540",
+   "5440"
+  ],
+  "noun+nom+sandhip": [
+   "44"
+  ],
+  "noun+nom+sandhit": [
+   "43"
+  ],
+  "noun+pl+abl": [
+   "0155",
+   "0165016302534302",
+   "0165"
+  ],
+  "noun+pl+acc": [
+   "0d",
+   "01550d",
+   "4040006201550d",
+   "404000620d"
+  ],
+  "noun+pl+dat+ben": [
+   "024040084000",
+   "40400062024040084000"
+  ],
+  "noun+pl+foc": [
+   "430855",
+   "40400062430855"
+  ],
+  "noun+pl+gen": [
+   "004302",
+   "0155",
+   "40400062004302",
+   "404000620155"
+  ],
+  "noun+pl+inst": [
+   "0865",
+   "01550865",
+   "404000620865",
+   "4040006201550865"
+  ],
+  "noun+pl+loc": [
+   "01420054",
+   "0165",
+   "4040006201420054",
+   "404000620165"
+  ],
+  "noun+pl+nom": [
+   "",
+   "40400062"
+  ],
+  "noun+pl+nom+cmpr": [
+   "440c65"
+  ],
+  "noun+pl+soc": [
+   "0c4202",
+   "02420055",
+   "4040006202420055",
+   "404000620c4202"
+  ],
+  "noun+soc": [
+   "0c4202",
+   "6102420055",
+   "610c4202",
+   "02420055"
+  ],
+  "noun+abl+foc": [
+   "0165016302534302430855"
+  ],
+  "noun+acc+foc": [
+   "0d43430855"
+  ],
+  "noun+dat+foc": [
+   "0240400243430855"
+  ],
+  "noun+dat+pl+foc": [
+   "02404002430855",
+   "0240400243430855"
+  ],
+  "noun+inst+foc": [
+   "0865430855"
+  ],
+  "noun+loc+foc": [
+   "01420054430855",
+   "0165430855"
+  ],
+  "noun+pl+inst+foc": [
+   "0865430855",
+   "01550865430855"
+  ],
+  "noun+pl+loc+foc": [
+   "01420054430855",
+   "0165430855"
+  ],
+  "noun+pl+nom+foc": [
+   "430855"
+  ],
+  "noun+pl+soc+foc": [
+   "0c4202430855"
+  ],
+  "noun+infInc+abl": [
+   "0155",
+   "0165016302534302"
+  ],
+  "noun+infInc+abl+foc": [
+   "0165016302534302430855"
+  ],
+  "noun+infInc+acc": [
+   "0d"
+  ],
+  "noun+infInc+dat": [
+   "02404002"
+  ],
+  "noun+infInc+dat+foc": [
+   "0240400243430855"
+  ],
+  "noun+infInc+dat+sandhic": [
+   "0240400241"
+  ],
+  "noun+infInc+dat+sandhik": [
+   "0240400240"
+  ],
+  "noun+infInc+dat+sandhip": [
+   "0240400244"
+  ],
+  "noun+infInc+dat+sandhit": [
+   "0240400243"
+  ],
+  "noun+infInc+gen": [
+   "004302",
+   "0155004302",
+   "0155"
+  ],
+  "noun+infInc+gen+foc": [
+   "004302430855",
+   "0155004302430855"
+  ],
+  "noun+infInc+inst": [
+   "0865"
+  ],
+  "noun+infInc+inst+foc": [
+   "0865430855"
+  ],
+  "noun+infInc+loc": [
+   "01420054",
+   "0165"
+  ],
+  "noun+infInc+loc+foc": [
+   "01420054430855",
+   "0165430855"
+  ],
+  "noun+infInc+soc": [
+   "0165",
+   "02420055",
+   "0c4202"
+  ],
+  "noun+infInc+soc+foc": [
+   "0165430855",
+   "0c4202430855"
+  ],
+  "noun+pl+abl+foc": [
+   "0165016302534302430855"
+  ],
+  "noun+pl+acc+foc": [
+   "01550d43430855",
+   "0d43430855"
+  ],
+  "noun+pl+gen+foc": [
+   "004302430855"
+  ],
+  "noun+so": [
+   "02420055"
+  ],
+  "noun+pl+dat": [
+   "02404002"
+  ]
+ }
+}

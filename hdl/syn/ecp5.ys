@@ -1,0 +1,5 @@
+# Same flow and flags as SanskritOS's reproduced figure (Yosys synth_ecp5, classic ABC):
+#   yosys -s syn/ecp5.ys
+read_verilog gen/tamil_noun_class.v
+synth_ecp5 -noabc9 -flatten -top tamil_noun_class
+stat

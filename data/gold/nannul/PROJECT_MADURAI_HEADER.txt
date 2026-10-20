@@ -1,0 +1,25 @@
+Header page of Project Madurai etext pmuni0147 (https://www.projectmadurai.org/pm_etexts/utf8/pmuni0147.html),
+reproduced verbatim as its distribution terms require. The `verse_split` field of nurpa.json is taken from that etext.
+----------------------------------------------------------------------
+nannUl of pavaNanti munivar (in tamil script, unicode format)
+nannUl of pavaNati munivar
+(in tamil script, unicode format)
+நன்னூல்
+பவணந்தி முனிவர்
+இலக்கண நூல்
+Acknowledgement:
+Our Sincere thanks go to the following persons for their assistance in the preparation of this work.
+Etext preparation: Dr. Thomas Malten, Inst. of Indology and Tamil Studies, Univ of Koeln, Germany
+The etxt initially prepared in transliterated format was converted to unicode format
+using the TextConvertor of Mani Manivannan and was set to conform to the version edited by
+Mani ThirunavukkarasuMudaliar, published by vaviLla Ramasamy Sasturulu &Sons, Madras, India, 1926.
+Proof-reading: Mr. N.D. Logasundaram, Chennai, Tamilnadu, India
+Web and PDF versions: Mr. N.D. Logasundaram, Chennai, Tamilnadu, India & Dr. K. Kalyanasundaram, Lausanne, Switzerland, respectively
+This webpage presents the Etext in Tamil script in Unicode encoding.
+This page was first put up on  March 26, 2002
+© Project Madurai, 1998-2021.
+Project Madurai is an open, voluntary, worldwide initiative devoted to the preparation
+of electronic texts of tamil literary works and to distribute them free on the Internet.
+Details of Project Madurai are available at the website
+https://www.projectmadurai.org/
+You are welcome to freely distribute this file, provided this header page is kept intact.
