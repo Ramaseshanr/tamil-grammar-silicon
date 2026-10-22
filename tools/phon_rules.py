@@ -177,7 +177,10 @@ MORPH = {
     # மெய்யீற்றுப் புணரியல் [Naṉṉūl 227].  Both licensed; 243 says the சாரியை is விகற்பம்.
     "dat":   ["உக்கு", "இற்கு"],
     "ben":   ["ஆக"],
-    # ``உக்கு`` carries the உ சாரியை that Naṉṉūl gives the dative; ``கள்`` takes none.
+    # ``உக்கு`` is the உ சாரியை plus the ending க்கு. It comes from two sources, not from a nūṟpā: ThamizhiMorph's
+    # lexicon spells the dative as ten class-specific allomorphs (வுக்கு, யுக்கு, ணுக்கு, ... ), nine of which are
+    # உ + க்கு after the stem's own consonant or a glide, and Arden 110 gives உக்கு. Naṉṉūl 244 lists உ among the
+    # சாரியை but does not say the dative takes it, so that pairing is this table's. ``கள்`` takes none.
     "loc":   ["இல்", "இடம்"],
     "abl":   ["இல்", "இன்", "இலிருந்து"],
     "gen":   ["இன்", "அது"],
@@ -294,6 +297,11 @@ def needs_obl(feat):
     return core.strip("+") not in ("nom", "")
 
 # ------------------------------------------------------------------ derive
+def _arden110(cur):
+    """True when the base ends in இ, ஈ or ஐ: quality 1 (i) or 5 (ai), short or long."""
+    x = [b for b in cur if b != C0]
+    return bool(x) and T.is_uyir(x[-1]) and (x[-1] & 7) in (1, 5)
+
 def derive_labeled(stem, cls, feat):
     """Every licensed surface, each tagged with the optional choices that produced it.
 
@@ -319,6 +327,18 @@ def derive_labeled(stem, cls, feat):
         nxt = set()
         for cur, k, first, d in outs:
             for vi, a in enumerate(alts):
+                # P12  The dative உருபு is கு itself [Tolkāppiyam, Collatikāram, வேற்றுமையியல் 14:
+                # கு எனப் பெயரிய வேற்றுமைக் கிளவி]. The உ of உக்கு is a சாரியை [Naṉṉūl 244 lists
+                # it], which may be left out [Naṉṉūl 243; and Tolkāppiyam, உருபியல் 30, says that for
+                # words it has not listed a சாரியை is not obligatory]; Arden 110 says where: after a
+                # base ending in இ, ஈ or ஐ -- குழந்தைக்கு, not குழந்தையுக்கு.
+                g = gem                         # the class decides whether a வல்லினம் doubles ...
+                if kind == "dat" and a != "உக்கு" and _arden110(cur):
+                    continue                    # after இ ஈ ஐ the dative is கு only: no இற்கு (குழந்தையிற்கு, தந்தையிற்கு are not forms)
+                if kind == "dat" and a == "உக்கு" and _arden110(cur):
+                    # ... but this உருபு is a வேற்றுமை one, and it doubles after a vowel whatever the
+                    # class (மொழிக்கு), where the plural கள் is not (மொழிகள்).
+                    FIRED["P12 dative-ku"] += 1; a = "கு"; g = True
                 if not a:                       # the slot may be empty (சாரியை)
                     nxt.add((cur, k, first, d)); continue
                 dd = list(d)
@@ -327,11 +347,11 @@ def derive_labeled(stem, cls, feat):
                 if kind in CASES and d[0] and a.startswith("இன்"):
                     continue                    # இன் + இன் -> இனின், not a word
                 nk = B(a)[-1] == U
-                nxt.add((join(cur, B(a), pada=pada and last, gem=gem,
+                nxt.add((join(cur, B(a), pada=pada and last, gem=g,
                               clitic=(kind in CLITIC), kural=k), nk, False, tuple(dd)))
                 if dblfin and first and VARIANTS == "all":
                     e = list(dd); e[2] = 1
-                    nxt.add((join(cur, B(a), pada=pada and last, gem=gem,
+                    nxt.add((join(cur, B(a), pada=pada and last, gem=g,
                                   clitic=(kind in CLITIC), kural=k, mono=True),
                              nk, False, tuple(e)))
                 if kind in CLITIC and VARIANTS == "all":
@@ -344,7 +364,7 @@ def derive_labeled(stem, cls, feat):
                     # licenses both, which is the error paper/tlp1-encoding.md argues
                     # against. Identical outputs dedup, so this is free where P2 is idle.
                     e = list(dd); e[5] = 1
-                    nxt.add((join(cur, B(a), pada=pada and last, gem=gem,
+                    nxt.add((join(cur, B(a), pada=pada and last, gem=g,
                                   clitic=(kind in CLITIC), kural=k, nohard=True),
                              nk, False, tuple(e)))
         outs = nxt

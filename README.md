@@ -14,8 +14,10 @@ that are fitted instead are labelled and counted ([docs/METHOD.md](docs/METHOD.m
 | | |
 |---|---|
 | **TLP1**, a one-byte-per-phoneme encoding built on Tolkāppiyam பிறப்பியல் 7–9 | [spec/TLP1.md](spec/TLP1.md) |
-| **Noun rules**: 113 phonemic parameters replace 1,637 spelling-level ones (28 rules and 1,609 endings) | `tools/phon_rules.py`, [docs/RULES.md](docs/RULES.md) |
+| **Noun rules**: 114 phonemic parameters replace 1,637 spelling-level ones (28 rules and 1,609 endings) | `tools/phon_rules.py`, [docs/RULES.md](docs/RULES.md) |
 | **Declension class decision in RTL**: 132 LUT4 and no flip-flops; the streaming datapath is 196 LUT4 and 36 flip-flops (ECP5 synthesis, 142.5 MHz); it agrees with the Python on all 43,647 classified stems | `hdl/`, [docs/HARDWARE.md](docs/HARDWARE.md) |
+| **Juncture rules in RTL**: what happens where a stem meets its ending (assimilation, hardening, hiatus, glides), 73 LUT4; matches the Python on 927,200 vectors | `hdl/rtl/tamil_join.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
+| **Noun generator in RTL**: a stem, a class and a case bundle in, every licensed form out (869 LUT4 on ECP5); in simulation it produces the same set of forms as the Python derivation in **all 1,552,669 reference cells** | `hdl/rtl/tamil_noun_gen.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
 | **TF1**, a 128-bit feature register for nouns and verbs | [spec/TF1.md](spec/TF1.md) |
 
 ## How well it works
@@ -23,9 +25,9 @@ that are fitted instead are labelled and counted ([docs/METHOD.md](docs/METHOD.m
 - A correct surface form is derived in **99.23%** of 1,554,418 ThamizhiMorph noun cells. That
   is a coverage ceiling, not precision: the derivation also produces forms the reference
   does not list.
-- **85.68%** (634 of 740) on independent UD Tamil items. This is a development score: the
+- **87.03%** (644 of 740) on independent UD Tamil items. This is a development score: the
   causes were fixed from the same misses, and the first run was 81.08%. Datives are the weak
-  spot, at 57.3%.
+  spot, at 69.3%.
 
 Every figure above is a row in [paper/CLAIMS.tsv](paper/CLAIMS.tsv) with the command that
 regenerates it. `python3 tools/check_claims.py` reports which claims the repository has moved
@@ -33,8 +35,9 @@ out from under.
 
 ## What does not exist yet
 
-- Hardware for the rest of the noun derivation (the sandhi and linking-increment stages are
-  Python only). The chip decides a stem's class; it does not yet generate மரத்தில்.
+- The plumbing around the noun generator: it takes decoded fields, not the TF1 register; the classifier does
+  not yet feed it its class; and nothing converts Tamil text to the bytes it reads. It is verified in simulation
+  and meets 54.7 MHz on an ECP5 (it has not been pipelined), not tested on a board.
 - Any verb hardware. The verb side stops at the TF1 register and its codec.
 - Outside review.
 

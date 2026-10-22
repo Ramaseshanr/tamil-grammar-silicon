@@ -14,8 +14,9 @@ two disagree, and what is not allowed to enter the derivation at all.
 | 5 | **Fitted parameters** | must be labelled `[fitted]` and counted |
 
 Where Naṉṉūl is silent, the silence is recorded, so that no lower source becomes the authority by default.
-Of Tolkāppiyam only the எழுத்ததிகாரம் பிறப்பியல் (21 nūṟpā, Project Madurai) is in the repository; elsewhere it is
-cited by name only.
+Of Tolkāppiyam two chapters are in the repository (Project Madurai): the எழுத்ததிகாரம் பிறப்பியல் (21 nūṟpā) and the
+சொல்லதிகாரம் வேற்றுமையியல் (22). Nūṟpā numbers restart in each iyal, so a citation names the iyal; elsewhere Tolkāppiyam
+is cited by name only.
 
 ## Corpus counts
 
@@ -46,6 +47,13 @@ and 73 are labelled fitted.
 - Naṉṉūl is a 13th-century grammar of classical Tamil. It cannot say which of two licensed alternants is the modern
   standard, and it does not cover most of the modern verb system's analytic formations, loan phonology or the Grantha
   letters. Where it cannot speak the parameter is labelled `[fitted]` or `[Arden]` and counted.
+- The dative: Tolkāppiyam names the case உருபு **கு** itself (வேற்றுமையியல் 14, கு எனப் பெயரிய வேற்றுமைக் கிளவி), so the உ of
+  உக்கு is a சாரியை. Tolkāppiyam's உருபியல் lists the words that take a சாரியை and says that for every other word it is not obligatory
+  (30, as I read it); Naṉṉūl lists உ among the சாரியை (244) and lets any சாரியை be left out (243), but neither says where the உ is
+  absent in the dative. The
+  condition, that the உ is absent after a base ending in இ, ஈ or ஐ, is Arden 110 (rank 2), and that part is labelled as such.
+  ThamizhiMorph's குழந்தையுக்கு and குழந்தையிற்கு are not generated: after இ, ஈ or ஐ the dative is கு only (குழந்தைக்கு, தந்தைக்கு),
+  while the இற்கு route stays for other stems (மரத்திற்கு, பசுவிற்கு).
 - Where ThamizhiMorph contradicts a nūṟpā, the project follows the nūṟpā: the டு/று-final stems are relabelled by
   Naṉṉūl 181–182 (`tools/relabel_nannul.py`).
 

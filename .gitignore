@@ -5,6 +5,8 @@ data/gold/UD_Tamil-TTB/
 data/gold/freq/tawiki_freq.tsv
 dist/
 hdl/target/
+hdl/vectors/join_vectors.hex
+hdl/vectors/gen_vectors.hex
 hdl/tb/*.vvp
 hdl/syn/*.json
 hdl/syn/*.cfg

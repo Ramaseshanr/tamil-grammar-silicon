@@ -12,7 +12,11 @@ text with no commentary. Its header states: "You are welcome to freely distribut
 file, provided this header page is kept intact." The header is preserved verbatim in the
 output, and Tolkāppiyam itself is ancient and in the public domain.
 
-    python3 tools/vendor_tolkappiyam.py <downloaded.html>
+    python3 tools/vendor_tolkappiyam.py <downloaded.html>                     # பிறப்பியல் -> pirappiyal.json
+    python3 tools/vendor_tolkappiyam.py <downloaded.html> --iyal வேற்றுமையியல் \
+        --atikaram சொல்லதிகாரம் --out vettrumaiyiyal.json                    # another chapter
+
+Nūṟpā numbers restart in each iyal, so a citation is an iyal and a number.
 """
 import sys, re, html, json, pathlib
 
@@ -29,7 +33,7 @@ def strip_tags(s):
     s = re.sub(r"</(p|div|h\d|tr|li)>", "\n", s, flags=re.I)
     return html.unescape(re.sub(r"<[^>]+>", "", s))
 
-def main(path):
+def main(path, iyal="பிறப்பியல்", atikaram="எழுத்ததிகாரம்", out="pirappiyal.json"):
     raw = pathlib.Path(path).read_text(encoding="utf-8", errors="replace")
     text = strip_tags(raw)
     lines = [l.rstrip() for l in text.split("\n")]
@@ -41,9 +45,9 @@ def main(path):
     heads = [i for i, l in enumerate(lines) if HEAD.match(l)]
     toc_end = max((i for i in heads if i < 120), default=0)
     body_heads = [i for i in heads if i > toc_end]
-    beg = next((i for i in body_heads if "பிறப்பியல்" in lines[i]), None)
+    beg = next((i for i in body_heads if iyal in lines[i]), None)
     if beg is None:
-        sys.exit("பிறப்பியல் body heading not found")
+        sys.exit(f"{iyal} body heading not found")
     end = next((i for i in body_heads if i > beg), len(lines))
     heading = lines[beg].strip()
     body = lines[beg + 1:end]
@@ -75,7 +79,7 @@ def main(path):
 
     hdr = "\n".join(l.strip() for l in lines[:60] if l.strip())[:1400]
     OUT.mkdir(parents=True, exist_ok=True)
-    doc = {"work": "தொல்காப்பியம்", "atikaram": "எழுத்ததிகாரம்", "iyal": "பிறப்பியல்",
+    doc = {"work": "தொல்காப்பியம்", "atikaram": atikaram, "iyal": iyal,
            "heading_verbatim": heading,
            "source": SRC_URL,
            "source_note": "Project Madurai etext pmuni0100, plain numbered nūṟpā, no "
@@ -84,14 +88,16 @@ def main(path):
                           "the public domain.",
            "header_verbatim": hdr,
            "count": len(nurpa), "nurpa": nurpa}
-    (OUT / "pirappiyal.json").write_text(
+    (OUT / out).write_text(
         json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"  nūṟpā parsed      : {len(nurpa)}")
     print(f"  numbering         : {min(v['n'] for v in nurpa)}–{max(v['n'] for v in nurpa)}")
     print(f"  non-Tamil tokens  : {len(bad)}" + (f"  {bad[:4]}" if bad else "  (all clean)"))
-    print(f"  written           : {OUT.relative_to(ROOT)}/pirappiyal.json")
+    print(f"  written           : {OUT.relative_to(ROOT)}/{out}")
     for v in nurpa[:2]:
         print(f"\n  {v['n']}. " + " / ".join(v["lines"]))
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    a = sys.argv[1:]
+    opt = lambda k, d: a[a.index(k) + 1] if k in a else d
+    main(a[0], opt("--iyal", "பிறப்பியல்"), opt("--atikaram", "எழுத்ததிகாரம்"), opt("--out", "pirappiyal.json"))

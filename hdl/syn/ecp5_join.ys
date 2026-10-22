@@ -1,0 +1,4 @@
+# The juncture unit (combinational). Same flow and flags as the classifier.
+read_verilog -sv -I. rtl/tamil_join.sv
+synth_ecp5 -noabc9 -flatten -top tamil_join
+stat

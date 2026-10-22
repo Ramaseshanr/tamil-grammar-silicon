@@ -10,7 +10,7 @@ and logs every change.
              any noun -- it is optional. ThamizhiMorph licenses only the இன்-inserted
              form for 6 bundles. Add the plain counterparts.
   Arden 110  the dative affix is கு after a base ending in இ, ஈ or ஐ; உக்கு only
-             after other letters. ThamizhiMorph generates மொழியுக்கு. Add மொழிக்கு.
+             after other letters. ThamizhiMorph generates மொழியுக்கு (and மொழியுக்காக). Add மொழிக்கு (and மொழிக்காக).
   Arden 134  நடு and மறு -- words of two short open syllables -- belong to the FOURTH
              declension, whose base equals the nominative. They must not double.
 
@@ -61,13 +61,13 @@ def two_short_open(b):
             and T.is_mey(b[2]) and T.is_kuril(b[3]))
 
 def main():
-    log = []; n145 = n110 = n134 = n129 = n_del = 0
+    log = []; n145 = n110 = n134 = n129 = n_del = n110d = 0
     out = []
     for line in GRID.read_text(encoding="utf-8").splitlines():
         p = line.split("\t")
         if len(p) != 4: continue
         stem, cls, feat, surfs = p[0], p[1], p[2], p[3].split("|")
-        sb = enc(stem); add = set()
+        sb = enc(stem); add = set(); drop110 = set()
 
         # --- Arden 145: in-insertion is optional -------------------------------
         # MUST be matched in TLP1, not Unicode: viRkaLinai does not string-end with
@@ -86,11 +86,22 @@ def main():
         # --- Arden 110: dative ku after i/ii/ai --------------------------------
         if "dat" in feat and "pl" not in feat and sb and sb[-1] in FRONT:
             for s in surfs:
-                if "யுக்கு" in s:
-                    cand = s.replace("யுக்கு", "க்கு")
-                    if cand not in surfs:
-                        add.add(cand); n110 += 1
-                        if len(log) < 20000: log.append(f"110\t{stem}\t{feat}\t+{cand}\t(was {s})")
+                # யுக்கு is the plain dative; யுக்காக is the same உ சாரியை before the benefactive ஆக
+                if "யிற்கு" in s or "யிற்காக" in s:
+                    # the இன் route does not exist after இ ஈ ஐ either: குழந்தையிற்கு, தந்தையிற்கு are not forms
+                    drop110.add(s); n110d += 1
+                    if len(log) < 20000: log.append(f"110d\t{stem}\t{feat}\t-{s}")
+                for wrong, right in (("யுக்கு", "க்கு"), ("யுக்காக", "க்காக")):
+                    if wrong in s:
+                        cand = s.replace(wrong, right)
+                        if cand not in surfs:
+                            add.add(cand); n110 += 1
+                            if len(log) < 20000: log.append(f"110\t{stem}\t{feat}\t+{cand}\t(was {s})")
+                        # Arden (rank 2) outranks ThamizhiMorph (rank 3), and he says the உக்கு form is for bases
+                        # ending in any OTHER letter, so after இ ஈ ஐ it is wrong, not a second licensed form.
+                        # The correct form is in the cell (just added, or already there), so no cell empties.
+                        drop110.add(s); n110d += 1
+                        if len(log) < 20000: log.append(f"110d\t{stem}\t{feat}\t-{s}")
 
         # --- Arden 134: two short open syllables do not double -----------------
         # The base equals the nominative (Arden 136), so the marker attaches directly.
@@ -139,7 +150,7 @@ def main():
                             log.append(f"129\t{stem}\t{feat}\t+{cand}\t(gold {'/'.join(surfs)})")
 
         # --- REMOVAL: two-short-open stems must not double -----------------------
-        # Every other patch only ADDS, which is the safe direction. This one removes,
+        # Most patches only ADD, which is the safe direction. This one (and the Arden 110 one above) removes,
         # because leaving மட்டை licensed means the verifier accepts non-Tamil -- the
         # exact failure mode this gold exists to prevent. Gated to the one case two
         # authorities agree on: Arden 134 (fourth declension, base = nominative) and
@@ -153,7 +164,7 @@ def main():
                     drop.add(s2); n_del += 1
                     if len(log) < 20000: log.append(f"134d\t{stem}\t{feat}\t-{s2}")
 
-        final = (set(surfs) | add) - drop
+        final = (set(surfs) | add) - drop - drop110
         if not final: final = set(surfs)            # never empty a cell
         out.append("\t".join([stem, cls, feat, "|".join(sorted(final))]))
 
@@ -162,6 +173,7 @@ def main():
     print(f"cells written       : {len(out):,} -> {OUT.relative_to(ROOT)}")
     print(f"  Arden 145 additions: {n145:,}")
     print(f"  Arden 110 additions: {n110:,}")
+    print(f"  Arden 110 REMOVED  : {n110d:,}   (the உக்கு form after இ ஈ ஐ)")
     print(f"  Arden 134 additions: {n134:,}")
     print(f"  Arden 129 additions: {n129:,}   (Naṉṉūl 181 guard applied)")
     print(f"  REMOVED (134+Naṉṉūl): {n_del:,}")

@@ -35,6 +35,7 @@ morphs meet. The rules with their sources of authority:
 | P9 | coalescence: மர + அத்து → மரத்து (அத்து is listed in Naṉṉūl 244) | R13 |
 | P10 | a clitic doubles its initial வல்லினம் after a vowel | lexicon |
 | P11 | ஒற்று இரட்டல்: the final ஒற்று doubles before a vowel உருபு | lexicon |
+| P12 | the dative is கு alone after a base ending in இ, ஈ or ஐ, with neither the உ சாரியை nor the இன் route: குழந்தைக்கு, not குழந்தையுக்கு or குழந்தையிற்கு. The உருபு is கு (Tolkāppiyam, வேற்றுமையியல் 14), the உ is a சாரியை that need not appear (Tolkāppiyam உருபியல் 30; Naṉṉūl 244, 243), and where is Arden 110 | lexicon |
 | none | R1 R2 R7 R11 R15 R101 | |
 
 Six of the 28 rules only delete a pulli before a vowel sign, or a doubled stem-final consonant, and have no counterpart
@@ -47,10 +48,10 @@ for a slot is a set of forms. The licensed alternants are carried and tagged (`t
 
 ```
 orthographic   28 rewrite rules + 1,609 suffix allomorphs        = 1,637
-phonemic       10 labelled rules + 23 morphemes + 20 classes x 4 =   113
+phonemic       11 labelled rules + 23 morphemes + 20 classes x 4 =   114
 ```
 
-About 80 of the 113 are class values read off the lexicon, not from a verse. The 1,609 spellings collapse because the lexicon
+About 80 of the 114 are class values read off the lexicon, not from a verse. The 1,609 spellings collapse because the lexicon
 pre-spells the result of sandhi: six spellings of the plural (ங்கள், க்கள், ட்கள், ற்கள், ர்கள், கள்) are one morpheme, கள், once
 the juncture is derived.
 
@@ -59,16 +60,16 @@ the juncture is derived.
 | | |
 |---|---:|
 | cells in which a reference form is derived | **99.23%** of 1,554,418 |
-| surface recall (every licensed variant generated) | 95.64% |
-| precision, all licensed variants | 59.13% |
+| surface recall (every licensed variant generated) | 99.03% |
+| precision, all licensed variants | 60.67% |
 | precision, one form per cell (`TAMILOS_PHON_VARIANTS=min`) | 96.38% |
-| independent UD Tamil nouns (634 of 740) | 85.68% |
+| independent UD Tamil nouns (644 of 740) | 87.03% |
 
 - The cell figure is a **coverage ceiling, not a precision**: a cell counts as derived if any reference form appears in it.
 - Precision against ThamizhiMorph is a lower bound: the reference lists only some of the alternants the nūṟpā license.
 - The UD figure is a **development score**: its causes were fixed from the same misses, and the first run was 81.08%. The
-  dative is the weakest case at 57.3%. The treebank is fetched by `tools/fetch_ud_ttb.sh` (non-commercial licence).
-- With the licensed alternants tagged, the grid grows from 2,303,173 to 3,824,108 surfaces; 98.66% of the surfaces the
+  dative is the weakest case at 69.3%. The treebank is fetched by `tools/fetch_ud_ttb.sh` (non-commercial licence).
+- With the licensed alternants tagged, the grid grows from 2,224,413 to 3,650,836 surfaces; 98.57% of the surfaces the
   reference omits are such alternants (again a cell-level ceiling).
 
 Each figure is a row of [../paper/CLAIMS.tsv](../paper/CLAIMS.tsv) with the command that regenerates it.
