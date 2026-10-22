@@ -216,9 +216,9 @@ show that is a live risk, not a theoretical one.
    flag that would make க்க் one byte rather than two.
 6. ~~**Re-express `tamil-noun.foma`'s 19+6 rules phonemically** and diff the outputs against
    `nouns_grid.tsv`.~~ **Done** — `tools/phon_rules.py`, `docs/RULES.md`.
-   **1,637 orthographic parameters → 113 phonemic**, deriving a gold surface in
-   **99.13%** of the 1,554,418 cells (surface precision 96.27% when one form is generated
-   per cell). **Eleven of the 28 foma rules never fire**, and **six have no phonemic content
+   **1,637 orthographic parameters → 114 phonemic**, deriving a reference surface in
+   **99.23%** of the 1,554,418 cells (surface precision 96.38% when one form is generated
+   per cell; figures as of 2026-10-22, kept current in `docs/RULES.md`). **Eleven of the 28 foma rules never fire**, and **six have no phonemic content
    at all** — they delete a pulli before a vowel sign, which in TLP1 is not a deletion but a
    non-event. Four gold defects fell out of the diff.
 
@@ -262,7 +262,8 @@ nasalize(c) = (c & 0x07) | 0x50        harden(c) = (c & 0x07) | 0x40
 
 holds for every மெய், in both series, with no table. Verified behaviour-preserving: the
 derivation reproduces draft 1 to the digit — 1,542,530 / 1,554,418 cells, recall 95.64%,
-precision 54.62%, UD 632/740 — because the encoding is internal and every boundary is
+precision 54.62%, UD 632/740 (measured on 2026-10-16, when the change was made; later fixes have
+moved every one of these figures) — because the encoding is internal and every boundary is
 Unicode.
 
 One defect in the change is worth recording too. `tools/phon_rules.py` read its phoneme
