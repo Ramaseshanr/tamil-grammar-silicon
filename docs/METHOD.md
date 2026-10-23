@@ -14,10 +14,11 @@ two disagree, and what is not allowed to enter the derivation at all.
 | 5 | **Fitted parameters** | must be labelled `[fitted]` and counted |
 
 Where Naṉṉūl is silent, the silence is recorded, so that no lower source becomes the authority by default.
-Of Tolkāppiyam four chapters are in the repository (Project Madurai): the எழுத்ததிகாரம் பிறப்பியல் (21 nūṟpā), புணரியல் (40)
-and உருபியல் (30), and the சொல்லதிகாரம் வேற்றுமையியல் (22). Nūṟpā numbers restart in each iyal, so a citation names the iyal
-(editions that number the Eḻuttatikāram straight through, such as tamilvu's, give புணரியல் 23 as 125, உருபியல் 13 as 185 and புள்ளிமயங்கியல் 15 as 310); elsewhere Tolkāppiyam is cited by
-name only.
+Of Tolkāppiyam seven chapters are in the repository (Project Madurai, each checked against Wikisource): from the எழுத்ததிகாரம்
+பிறப்பியல் (21 nūṟpā), புணரியல் (40), உருபியல் (30), உயிர்மயங்கியல் (93), புள்ளிமயங்கியல் (110) and குற்றியலுகரப் புணரியல்
+(77), and from the சொல்லதிகாரம் வேற்றுமையியல் (22). Nūṟpā numbers restart in each iyal, so a citation names the iyal (editions that
+number the Eḻuttatikāram straight through, such as tamilvu's, give புணரியல் 23 as 125, உருபியல் 13 as 185 and புள்ளிமயங்கியல் 15
+as 310); elsewhere Tolkāppiyam is cited by name only.
 
 ## Corpus counts
 

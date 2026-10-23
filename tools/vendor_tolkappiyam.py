@@ -41,7 +41,7 @@ def main(path, iyal="பிறப்பியல்", atikaram="எழுத்�
     # Chapter headings appear twice: once in the table of contents near the top
     # ("1.3 --  பிறப்பியல்") and once in the body ("1.3. பிறப்பியல்"). Take the body one,
     # which is the last occurrence, and run to the next body heading.
-    HEAD = re.compile(r"^\s*\d\.\d+\s*[-–.]*\s*\S")
+    HEAD = re.compile(r"^\s*\d\.\s*\d+\s*[-–.]*\s*\S")
     heads = [i for i, l in enumerate(lines) if HEAD.match(l)]
     toc_end = max((i for i in heads if i < 120), default=0)
     body_heads = [i for i in heads if i > toc_end]
