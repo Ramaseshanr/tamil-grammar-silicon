@@ -65,7 +65,7 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
     clitic=True a particle boundary (தான், போல்): no புணரியல் at all.
     kural=True  the left form ends in a குற்றியலுகரம் -- an enunciative உ that
                 drops before a vowel.  A முற்றியலுகரம் (பசு) does not: it takes
-                a உடம்படுமெய் instead.  Naṉṉūl 181-182 is doing the work here.
+                a உடம்படுமெய் instead [Naṉṉūl 162].  Naṉṉūl 94 says which உகரம் is a குற்றியலுகரம்; 164 drops it.
     """
     if not left:  return bytes(right)
     if not right: return bytes(left)
@@ -78,6 +78,7 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
 
     # P9  coalescence: two identical vowels across a seam become one
     #     (மர + அத்து -> மரத்து: the அ of the சாரியை absorbs)
+    #     [Naṉṉūl 252; Tolkāppiyam புணரியல் 23: அத்தின் அகரம் அகர முனை இல்லை]
     if inc and is_v(a) and a == b:
         FIRED["P9 coalesce"] += 1
         return bytes(left) + bytes(right[1:])

@@ -32,7 +32,7 @@ morphs meet. The rules with their sources of authority:
 | P5 | hiatus: a குற்றியலுகரம் drops before a vowel (Naṉṉūl 164) | R4, Cleanup1 |
 | P6 | உடம்படுமெய்: ய் after a front vowel, வ் otherwise | lexicon |
 | P8 | ன் → ர் before கள் (the உயர்திணை plural) | R6 |
-| P9 | coalescence: மர + அத்து → மரத்து (அத்து is listed in Naṉṉūl 244) | R13 |
+| P9 | coalescence: மர + அத்து → மரத்து (Naṉṉūl 252; அத்து is listed in 244) | R13 |
 | P10 | a clitic doubles its initial வல்லினம் after a vowel | lexicon |
 | P11 | ஒற்று இரட்டல்: the final ஒற்று doubles before a vowel உருபு | lexicon |
 | P12 | the dative is கு alone after a base ending in இ, ஈ or ஐ, with neither the உ சாரியை nor the இன் route: குழந்தைக்கு, not குழந்தையுக்கு or குழந்தையிற்கு. The உருபு is கு (Tolkāppiyam, வேற்றுமையியல் 14), the உ is a சாரியை that need not appear (Tolkāppiyam உருபியல் 30; Naṉṉūl 244, 243), and where is Arden 110 | lexicon |

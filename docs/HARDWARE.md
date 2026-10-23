@@ -44,7 +44,7 @@ form loses its first byte.
 
 | rule | what it does | source |
 |---|---|---|
-| P9 | two identical vowels become one (மர + அத்து → மரத்து) | Naṉṉūl 244 |
+| P9 | two identical vowels become one (மர + அத்து → மரத்து) | Naṉṉūl 252 (அத்து is listed in 244) |
 | P5 | a குற்றியலுகரம் drops before a vowel | Naṉṉūl 164 |
 | P6 | a glide fills a vowel-vowel seam, ய் after i, e, ai, otherwise வ் | உடம்படுமெய் |
 | P3 | a nasal is lost at a word boundary | |
