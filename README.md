@@ -14,7 +14,7 @@ that are fitted instead are labelled and counted ([docs/METHOD.md](docs/METHOD.m
 | | |
 |---|---|
 | **TLP1**, a one-byte-per-phoneme encoding built on Tolkāppiyam பிறப்பியல் 7–9 | [spec/TLP1.md](spec/TLP1.md) |
-| **Noun rules**: 114 phonemic parameters replace 1,637 spelling-level ones (28 rules and 1,609 endings) | `tools/phon_rules.py`, [docs/RULES.md](docs/RULES.md) |
+| **Noun rules**: 118 phonemic parameters replace 1,637 spelling-level ones (28 rules and 1,609 endings) | `tools/phon_rules.py`, [docs/RULES.md](docs/RULES.md) |
 | **Declension class decision in RTL**: 132 LUT4 and no flip-flops; the streaming datapath is 196 LUT4 and 36 flip-flops (ECP5 synthesis, 142.5 MHz); it agrees with the Python on all 43,647 classified stems | `hdl/`, [docs/HARDWARE.md](docs/HARDWARE.md) |
 | **Juncture rules in RTL**: what happens where a stem meets its ending (assimilation, hardening, hiatus, glides), 73 LUT4; matches the Python on 927,200 vectors | `hdl/rtl/tamil_join.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
 | **Noun generator in RTL**: a stem, a class and a case bundle in, every licensed form out (860 LUT4 on ECP5); in simulation it produces the same set of forms as the Python derivation in **all 1,552,669 reference cells** | `hdl/rtl/tamil_noun_gen.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |

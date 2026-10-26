@@ -48,10 +48,10 @@ for a slot is a set of forms. The licensed alternants are carried and tagged (`t
 
 ```
 orthographic   28 rewrite rules + 1,609 suffix allomorphs        = 1,637
-phonemic       11 labelled rules + 23 morphemes + 20 classes x 4 =   114
+phonemic       11 labelled rules + 27 morphemes + 20 classes x 4 =   118
 ```
 
-About 80 of the 114 are class values read off the lexicon, not from a verse. The 1,609 spellings collapse because the lexicon
+About 80 of the 118 are class values read off the lexicon, not from a verse. The 1,609 spellings collapse because the lexicon
 pre-spells the result of sandhi: six spellings of the plural (ங்கள், க்கள், ட்கள், ற்கள், ர்கள், கள்) are one morpheme, கள், once
 the juncture is derived.
 

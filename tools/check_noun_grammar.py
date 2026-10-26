@@ -11,7 +11,7 @@ combinations a noun takes: that is a property of the noun's class.
     python3 tools/check_noun_grammar.py            # the check, in the form the claims ledger records
     python3 tools/check_noun_grammar.py --ebnf     # only the EBNF text
 
-Exits non-zero if a bundle in data/derived/noun_bundles_*.txt is not a sentence of the grammar.
+Exits non-zero if a bundle of data/derived/nouns_grid_final.tsv (the reference grid) is not a sentence of the grammar.
 """
 import sys, pathlib, itertools
 
@@ -25,13 +25,14 @@ ALT = lambda *e: ("alt", list(e))
 OPT = lambda e: ("opt", e)
 
 RULES = [
-    ("noun_form", SEQ(T("noun"), OPT(R("stem_kind")), OPT(R("case_part")), OPT(R("particle")))),
+    ("noun_form", SEQ(T("noun"), OPT(R("stem_kind")), OPT(R("case_part")), OPT(R("vparticle")), OPT(R("particle")))),
     ("stem_kind", ALT(T("infInc"), T("pl"))),
     ("case_part", ALT(
         SEQ(T("nom"), OPT(T("cmpr"))),
         SEQ(T("acc"), OPT(ALT(T("vpart"), T("vpartp")))),
         SEQ(T("dat"), OPT(ALT(T("ben"), T("n"), T("pl")))),
         T("inst"), T("loc"), T("abl"), T("gen"), T("soc"), T("so"))),
+    ("vparticle", ALT(T("um"), T("ee"), T("oo"), T("aa"))),
     ("particle", ALT(T("foc"), T("psp"), R("sandhi"))),
     ("sandhi", ALT(T("sandhik"), T("sandhic"), T("sandhip"), T("sandhit"))),
 ]
@@ -39,6 +40,7 @@ NOTES = {
     "noun_form": "the order of the slots",
     "stem_kind": "infInc: the oblique stem with the இன் சாரியை; pl: the plural கள்",
     "case_part": "a case; only some cases take an extension",
+    "vparticle": "உம் ஏ ஓ ஆ: the vowel-initial particles, after the case [Tolkāppiyam இடையியல் 7-9; Naṉṉūl 422, 423, 425]",
     "particle": "foc தான், psp a postposition, or a joining consonant at a word boundary",
     "sandhi": "க் ச் ப் த்",
 }
@@ -84,9 +86,8 @@ def main():
     if "--ebnf" in sys.argv:
         print(ebnf()); return 0
     lang = set(sentences(R("noun_form")))
-    bundles = []
-    for f in ("noun_bundles_core.txt", "noun_bundles_psp.txt"):
-        bundles += [l.strip() for l in (ROOT / "data/derived" / f).read_text(encoding="utf-8").splitlines() if l.strip()]
+    bundles = sorted({l.split("\t")[2] for l in (ROOT / "data/derived/nouns_grid_final.tsv").read_text(encoding="utf-8").splitlines()
+                      if l.count("\t") >= 3})
     bad = [b for b in bundles if tuple(t for t in b.split("+") if t) not in lang]
     print(ebnf())
     print()

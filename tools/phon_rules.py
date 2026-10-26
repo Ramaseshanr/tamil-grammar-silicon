@@ -188,6 +188,10 @@ MORPH = {
     "soc":   ["ஓடு", "உடன்"],
     "foc":   ["தான்"],
     "cmpr":  ["போல்"],
+    # The vowel-initial particles (இடைச்சொல்). உம்மை, ஓகாரம், ஏகாரம்: Tolkāppiyam இடையியல் 7, 8, 9; Naṉṉūl 425, 423,
+    # 422. ஆ as the question particle has no verse in either இடையியல் that the project has found: lexicon only.
+    # Unlike தான் and போல், they begin with a vowel, so they join by the ordinary rules, not as a clitic.
+    "um":    ["உம்"], "ee": ["ஏ"], "oo": ["ஓ"], "aa": ["ஆ"],
     "sandhik": ["க்"], "sandhic": ["ச்"],
     "sandhip": ["ப்"], "sandhit": ["த்"],
     "infInc": [],            # realised by the stem-form stage, not a morpheme
@@ -195,6 +199,7 @@ MORPH = {
     "so":    ["உடன்"],
 }
 CLITIC = {"foc", "cmpr"}
+VCLITIC = ("um", "ee", "oo", "aa")          # the vowel-initial particles, after the case and before தான்
 CASES = ("acc", "inst", "dat", "loc", "abl", "gen", "soc", "nom", "so")
 ORDER = ("pl", "case", "ben", "cmpr", "foc", "sandhi")
 
@@ -213,6 +218,8 @@ def morphemes(feat):
             seq.append((MORPH[c] if VARIANTS == "all" else MORPH[c][:1], c)); break
     if "ben" in tags: seq.append((MORPH["ben"], "ben"))
     if "cmpr" in tags: seq.append((MORPH["cmpr"], "cmpr"))
+    for s in VCLITIC:
+        if s in tags: seq.append((MORPH[s], s))
     if "foc" in tags: seq.append((MORPH["foc"], "foc"))
     for s in ("sandhik", "sandhic", "sandhip", "sandhit"):
         if s in tags: seq.append((MORPH[s], s))
@@ -225,6 +232,7 @@ def morphemes(feat):
 # (ஊர், சுவர்), whose சாரியை ற்று (சுவற்றை, ஊற்றுக்கு) has no verse behind it. Naṉṉūl 204 (உடல்மேல் உயிர்வந்து
 # ஒன்றுவது இயல்பே) derives சுவரை and சுவரில் from the plain stem, and that is all the model derives.
 PLAIN_OK = set()
+KURAL_CLASSES = {"C6", "C7", "C8", "NDBLT", "NDBLR", "NCLUST"}   # the classes whose stems end in a குற்றியலுகரம்
 UYAR = {"C11"}                  # ன் -> ர் before கள்  (foma R6)
 
 STEMFORM = {
@@ -283,6 +291,9 @@ def stemform(stem_b, cls, feat):
                 if cls in PLAIN_OK and VARIANTS == "all":   # `min` means one form per cell
                     out.append((bytes(orig), gem, False, dblfin, 1))
                 return out
+    elif (cls in KURAL_CLASSES and stem_b and stem_b[-1] == U and "+pl" not in feat
+          and any("+" + c in feat for c in VCLITIC)):
+        stem_b = bytes(stem_b[:-1])             # the final குற்றியலுகரம் drops before a vowel particle [Naṉṉūl 164]
     elif "+pl" in feat and cls in UYAR and stem_b and stem_b[-1] == NA:
         FIRED["P8 uyar-plural"] += 1
         stem_b = bytes(stem_b[:-1]) + bytes([RA])
@@ -291,7 +302,7 @@ def stemform(stem_b, cls, feat):
 def needs_obl(feat):
     if "+pl" in feat: return False
     core = feat.replace("noun", "")
-    for x in ("+foc", "+cmpr", "+sandhic", "+sandhik", "+sandhip", "+sandhit"):
+    for x in ("+foc", "+cmpr", "+um", "+ee", "+oo", "+aa", "+sandhic", "+sandhik", "+sandhip", "+sandhit"):
         core = core.replace(x, "")
     return core.strip("+") not in ("nom", "")
 
