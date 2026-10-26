@@ -221,12 +221,10 @@ def morphemes(feat):
 # ------------------------------------------------------------------ 1. the stem-forms
 #   (truncate, increment, geminates, doubles-final) -- one row per declension class.
 #   `inc` is the சாரியை; `gem` is whether a வல்லினம் உருபு doubles after this stem.
-# Classes where the UNINFLECTED stem is a licensed oblique beside the சாரியை-bearing one
-# (ஊர் -> ஊருக்கு beside ஊற்றுக்கு; சுவர் -> சுவரை beside சுவற்றை). Restricted to C16
-# because everywhere else it yields non-words -- உலகமில் for ம்-final, காடுவை for உ-final.
-# Measured: widening it to every increment class bought 16 gold surfaces and zero UD items
-# (the one apparent item, கடலில், was an evaluator bug) and cost 128,529 non-word candidates.
-PLAIN_OK = {"C16"}
+# Classes where the UNINFLECTED stem is a licensed oblique beside the சாரியை-bearing one. Empty now: it was C16
+# (ஊர், சுவர்), whose சாரியை ற்று (சுவற்றை, ஊற்றுக்கு) has no verse behind it. Naṉṉūl 204 (உடல்மேல் உயிர்வந்து
+# ஒன்றுவது இயல்பே) derives சுவரை and சுவரில் from the plain stem, and that is all the model derives.
+PLAIN_OK = set()
 UYAR = {"C11"}                  # ன் -> ர் before கள்  (foma R6)
 
 STEMFORM = {
@@ -245,7 +243,7 @@ STEMFORM = {
     "C13": (0, "",      False, True ),   # முள்
     "C14": (0, "",      False, False),   # நாள்
     "C15": (1, "அத்து", False, False),   # மரம் -> மர + அத்து சாரியை -> மரத்து
-    "C16": (1, "ற்று",  False, False),   # சுவர் -> சுவற்று
+    "C16": (0, "",      False, False),   # சுவர் -> சுவரில் [Naṉṉūl 204]; ThamizhiMorph's சுவற்று has no verse
     # Naṉṉūl 181-182 relabels (tools/relabel_nannul.py): the குற்றியலுகரம் taxonomy
     # that replaced the coarse C6/C7/C8 split.
     "NDBLT":  (1, "டு",    False, False),   # காடு  -> காட்டு   (ட் doubles)

@@ -87,11 +87,11 @@ The two ROMs (the class table and the endings) are generated from `phon_rules.ST
 **Verification.** `hdl/tb/tb_noun_gen.v` loads each stem, runs the generator, collects every form it streams, and requires the
 *set* of forms to equal `phon_rules.derive()` for that cell. The software model `tools/noun_gen_model.py` is identical to the
 derivation on all 1,552,669 encodable cells. In hardware the sample gate (every class-and-bundle pair plus random cells, 3,992 cells, 9,342 forms) runs inside `build.sh`, and the
-exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL: 3,627,061 forms, the set of forms
+exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL: 3,576,724 forms, the set of forms
 equal to `phon_rules.derive()` in every cell, no mismatch** (about ten minutes on ten cores, in simulation).
 
-**Synthesis (Yosys, ECP5): 869 LUT4, 200 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
-the whole generator is 1,283 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **54.7 MHz** (it fails a 100 MHz target:
+**Synthesis (Yosys, ECP5): 860 LUT4, 196 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
+the whole generator is 1,274 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **54.9 MHz** (it fails a 100 MHz target:
 the stem-form and seam arithmetic is one long combinational path, and it has not been pipelined).
 
 **What it is not.** Its inputs are decoded fields (the case, plural, benefactive, comparative, focus and sandhi bits), not the TF1 register

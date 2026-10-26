@@ -16,7 +16,7 @@ function [40:0] class_rom(input [4:0] c);
     5'd12: class_rom = 41'h04000000000;   // C13
     5'd13: class_rom = 41'h00000000000;   // C14
     5'd14: class_rom = 41'h01202434300;   // C15
-    5'd15: class_rom = 41'h10e00024545;   // C16
+    5'd15: class_rom = 41'h00000000000;   // C16
     5'd16: class_rom = 41'h00a00000242;   // NDBLT
     5'd17: class_rom = 41'h00a00000245;   // NDBLR
     5'd18: class_rom = 41'h00200000000;   // NCLUST

@@ -60,8 +60,8 @@ the juncture is derived.
 | | |
 |---|---:|
 | cells in which a reference form is derived | **99.23%** of 1,554,418 |
-| surface recall (every licensed variant generated) | 99.03% |
-| precision, all licensed variants | 60.67% |
+| surface recall (every licensed variant generated) | 97.92% |
+| precision, all licensed variants | 60.84% |
 | precision, one form per cell (`TAMILOS_PHON_VARIANTS=min`) | 96.38% |
 | independent UD Tamil nouns (644 of 740) | 87.03% |
 
@@ -69,7 +69,7 @@ the juncture is derived.
 - Precision against ThamizhiMorph is a lower bound: the reference lists only some of the alternants the nūṟpā license.
 - The UD figure is a **development score**: its causes were fixed from the same misses, and the first run was 81.08%. The
   dative is the weakest case at 69.3%. The treebank is fetched by `tools/fetch_ud_ttb.sh` (non-commercial licence).
-- With the licensed alternants tagged, the grid grows from 2,224,413 to 3,650,836 surfaces; 98.57% of the surfaces the
+- With the licensed alternants tagged, the grid grows from 2,224,413 to 3,625,132 surfaces; 98.54% of the surfaces the
   reference omits are such alternants (again a cell-level ceiling).
 
 Each figure is a row of [../paper/CLAIMS.tsv](../paper/CLAIMS.tsv) with the command that regenerates it.

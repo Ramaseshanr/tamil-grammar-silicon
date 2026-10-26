@@ -46,7 +46,7 @@ with the files this project's claims were measured on. Every output matched exac
 not a drift: `derive_labeled` kept whichever optional-mechanism combination a hash-randomised set visited first
 when one surface could be reached several ways. It now keeps the derivation with the fewest optional mechanisms, so
 the file is the same under any `PYTHONHASHSEED` (checked with two seeds). The surfaces, licence tags, registers and
-counts were never affected (2,224,413 → 3,650,836 surfaces, as the ledger says).
+counts were never affected (2,224,413 → 3,625,132 surfaces, as the ledger says).
 
 ## What cannot be rebuilt exactly
 

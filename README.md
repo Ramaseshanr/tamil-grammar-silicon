@@ -17,7 +17,7 @@ that are fitted instead are labelled and counted ([docs/METHOD.md](docs/METHOD.m
 | **Noun rules**: 114 phonemic parameters replace 1,637 spelling-level ones (28 rules and 1,609 endings) | `tools/phon_rules.py`, [docs/RULES.md](docs/RULES.md) |
 | **Declension class decision in RTL**: 132 LUT4 and no flip-flops; the streaming datapath is 196 LUT4 and 36 flip-flops (ECP5 synthesis, 142.5 MHz); it agrees with the Python on all 43,647 classified stems | `hdl/`, [docs/HARDWARE.md](docs/HARDWARE.md) |
 | **Juncture rules in RTL**: what happens where a stem meets its ending (assimilation, hardening, hiatus, glides), 73 LUT4; matches the Python on 927,200 vectors | `hdl/rtl/tamil_join.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
-| **Noun generator in RTL**: a stem, a class and a case bundle in, every licensed form out (869 LUT4 on ECP5); in simulation it produces the same set of forms as the Python derivation in **all 1,552,669 reference cells** | `hdl/rtl/tamil_noun_gen.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
+| **Noun generator in RTL**: a stem, a class and a case bundle in, every licensed form out (860 LUT4 on ECP5); in simulation it produces the same set of forms as the Python derivation in **all 1,552,669 reference cells** | `hdl/rtl/tamil_noun_gen.sv`, [docs/HARDWARE.md](docs/HARDWARE.md) |
 | **TF1**, a 128-bit feature register for nouns and verbs | [spec/TF1.md](spec/TF1.md) |
 
 ## How well it works
@@ -37,7 +37,7 @@ out from under.
 
 - The plumbing around the noun generator: it takes decoded fields, not the TF1 register; the classifier does
   not yet feed it its class; and nothing converts Tamil text to the bytes it reads. It is verified in simulation
-  and meets 54.7 MHz on an ECP5 (it has not been pipelined), not tested on a board.
+  and meets 54.9 MHz on an ECP5 (it has not been pipelined), not tested on a board.
 - Any verb hardware. The verb side stops at the TF1 register and its codec.
 - Outside review.
 
