@@ -200,6 +200,7 @@ MORPH = {
 }
 CLITIC = {"foc", "cmpr"}
 VCLITIC = ("um", "ee", "oo", "aa")          # the vowel-initial particles, after the case and before தான்
+PARTICLE_TAGS = ("foc", "psp", "cmpr", "sandhi") + VCLITIC     # tags after which a bundle takes no further particle
 CASES = ("acc", "inst", "dat", "loc", "abl", "gen", "soc", "nom", "so")
 ORDER = ("pl", "case", "ben", "cmpr", "foc", "sandhi")
 

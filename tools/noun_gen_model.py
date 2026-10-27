@@ -8,12 +8,14 @@ checked first, in software, against every cell of the reference:
 
     class ROM      truncate, increment bytes, geminates, doubles-final, plain-ok, ன்->ர்
     morpheme ROM   per slot, the alternative endings (bytes), and whether each begins இன்
-    seven slots    pl, in, case, ben, cmpr, foc, sandhi -- active as the bundle says
+    eight slots    pl, in, case, ben, cmpr, vp, foc, sandhi -- active as the bundle says (vp: one of the
+                   vowel particles உம் ஏ ஓ ஆ)
     choices        at each slot the options are counted from the current state, and the generator
                    walks them like an odometer: every leaf is one licensed surface
     seam           tools/phon_rules.join(), which hdl/rtl/tamil_join.sv matches on 927,200 vectors
 
-    python3 tools/noun_gen_model.py          # all 1,554,418 cells against phon_rules.derive()
+    python3 tools/noun_gen_model.py              # all 1,554,418 cells against phon_rules.derive()
+    python3 tools/noun_gen_model.py --particles  # the cells with a vowel particle added, which the grid does not list
 """
 import sys, pathlib, itertools
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -24,7 +26,8 @@ import phon_rules as P
 B = P.B
 CLASSES = list(P.STEMFORM)                      # the class code is the index
 CLITIC = {"cmpr", "foc"}
-SLOTS = ("pl", "in", "case", "ben", "cmpr", "foc", "sandhi")
+SLOTS = ("pl", "in", "case", "ben", "cmpr", "vp", "foc", "sandhi")
+VPART = P.VCLITIC                                # the vowel particles, in the order of the hardware's flag code 1..4
 CASE_ORDER = ("acc", "inst", "dat", "loc", "abl", "gen", "soc", "nom", "so")
 SANDHI = ("sandhik", "sandhic", "sandhip", "sandhit")
 
@@ -35,6 +38,7 @@ ALTS = {"pl": [B(x) for x in P.MORPH["pl"]], "in": [B("இன்"), b""],
 for c in CASE_ORDER:
     if P.MORPH.get(c): ALTS[c] = [B(x) for x in P.MORPH[c]]
 for s in SANDHI: ALTS[s] = [B(x) for x in P.MORPH[s]]
+for s in VPART: ALTS[s] = [B(x) for x in P.MORPH[s]]
 IN_START = B("இன்")                              # a case alternative that begins இன் is barred after the சாரியை இன்
 DAT_U = B("உக்கு"); DAT_KU = B("கு")
 FRONT_IU = lambda cur: bool(cur) and T.is_uyir(cur[-1]) and (cur[-1] & 7) in (1, 5)    # P12: இ ஈ ஐ
@@ -46,6 +50,7 @@ def bundle(feat):
     case = next((c for c in CASE_ORDER if c in tags and P.MORPH.get(c)), None)
     return {"pl": "pl" in tags, "in": any(c in tags for c in ("acc", "inst", "gen", "abl")),
             "case": case, "ben": "ben" in tags, "cmpr": "cmpr" in tags, "foc": "foc" in tags,
+            "vp": next((s for s in VPART if s in tags), None),
             "sandhi": next((s for s in SANDHI if s in tags), None),
             "obl": ("infInc" in tags) or P.needs_obl(feat)}
 
@@ -68,14 +73,16 @@ def stem_form(stem_b, cls, bf):
                 if cls in P.PLAIN_OK: out.append((bytes(stem_b), False))
                 return out, gem, dblfin
         return [(b, kural)], gem, dblfin
-    if bf["pl"] and cls in P.UYAR and b and b[-1] == P.NA:
+    if cls in P.KURAL_CLASSES and bf["vp"] and not bf["pl"] and b and b[-1] == P.U:
+        b = b[:-1]                                 # the final குற்றியலுகரம் drops before a vowel particle [Naṉṉūl 164]
+    elif bf["pl"] and cls in P.UYAR and b and b[-1] == P.NA:
         b = b[:-1] + bytes([P.RA])
     return [(b, kural)], gem, dblfin
 
 
 def active(bf):
     return [("pl", bf["pl"] and "pl"), ("in", bf["in"] and "in"), ("case", bf["case"]),
-            ("ben", bf["ben"] and "ben"), ("cmpr", bf["cmpr"] and "cmpr"),
+            ("ben", bf["ben"] and "ben"), ("cmpr", bf["cmpr"] and "cmpr"), ("vp", bf["vp"]),
             ("foc", bf["foc"] and "foc"), ("sandhi", bf["sandhi"])]
 
 
@@ -122,11 +129,22 @@ def generate(stem_b, cls, feat):
     return out
 
 
-def main():
+def particle_cells():
+    """(stem, class, bundle) for every vowel particle added to every particle-free bundle the grid lists for a stem.
+    The reference grid has no such cell; these are the cells the derivation adds."""
+    plain = {}
+    for stem, cl, feat, _ in P.rows():
+        if not any(x in feat for x in P.PARTICLE_TAGS):
+            plain.setdefault((stem, P.re.sub(r"(Sg|pl)Root$", "", cl)), set()).add(feat)
+    for (stem, c), feats in sorted(plain.items()):
+        for feat in sorted(feats):
+            for v in VPART: yield stem, c, feat + "+" + v
+
+
+def check(cells, label):
     ok = bad = skip = 0
     shown = 0
-    for stem, cl, feat, surf in P.rows():
-        c = P.re.sub(r"(Sg|pl)Root$", "", cl)
+    for stem, c, feat in cells:
         want = P.derive(stem, c, feat)
         if want is None: skip += 1; continue
         got = {T.decode(bytes(x)) for x in generate(B(stem), c, feat)}
@@ -135,8 +153,14 @@ def main():
             bad += 1
             if shown < 8:
                 shown += 1; print("  DIFF", stem, c, feat, "only model:", sorted(got - want)[:2], "only derive:", sorted(want - got)[:2])
-    print(f"  noun generator model: {ok:,} / {ok + bad:,} cells identical to phon_rules.derive()   skipped {skip:,}")
+    print(f"  noun generator model{label}: {ok:,} / {ok + bad:,} cells identical to phon_rules.derive()   skipped {skip:,}")
     return 1 if bad else 0
+
+
+def main():
+    if "--particles" in sys.argv:
+        return check(particle_cells(), " (vowel-particle cells)")
+    return check(((s, P.re.sub(r"(Sg|pl)Root$", "", cl), f) for s, cl, f, _ in P.rows()), "")
 
 
 if __name__ == "__main__":

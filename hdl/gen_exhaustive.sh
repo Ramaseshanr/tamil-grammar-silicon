@@ -11,7 +11,7 @@ cd "$(dirname "$0")"
 W="${TMPDIR:-/tmp}/tamilos-gen-exhaustive"
 rm -rf "$W"; mkdir -p "$W"
 python3 ../tools/gen_noun_gen_hdl.py --full --out "$W/all.hex"
-iverilog -g2012 -I. -o "$W/tb.vvp" tb/tb_noun_gen.v rtl/tamil_noun_gen.sv rtl/tamil_join.sv
+iverilog -g2012 -I. -o "$W/tb.vvp" tb/tb_noun_gen.v rtl/tamil_noun_gen.sv rtl/tamil_noun_gen_core.sv rtl/tamil_join.sv
 N=$(sysctl -n hw.ncpu 2>/dev/null || nproc)
 LINES=$(wc -l < "$W/all.hex")
 split -l $(( (LINES + N - 1) / N )) "$W/all.hex" "$W/part_"

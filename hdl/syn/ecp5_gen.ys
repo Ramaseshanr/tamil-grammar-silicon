@@ -1,5 +1,5 @@
 # The noun generator (sequencer + juncture unit + ROMs + working buffers).
 read_verilog -sv -I. rtl/tamil_join.sv
-read_verilog -sv -I. rtl/tamil_noun_gen.sv
+read_verilog -sv -I. rtl/tamil_noun_gen.sv rtl/tamil_noun_gen_core.sv
 synth_ecp5 -noabc9 -flatten -top tamil_noun_gen
 stat

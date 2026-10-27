@@ -32,7 +32,7 @@ vvp tb/tbj.vvp
 
 stage "6. GATE: the noun generator, on a stratified sample of cells (every class x bundle pair, plus random cells)"
 python3 ../tools/gen_noun_gen_hdl.py --sample 4000
-iverilog -g2012 -I. -o tb/tbg.vvp tb/tb_noun_gen.v rtl/tamil_noun_gen.sv rtl/tamil_join.sv
+iverilog -g2012 -I. -o tb/tbg.vvp tb/tb_noun_gen.v rtl/tamil_noun_gen.sv rtl/tamil_noun_gen_core.sv rtl/tamil_join.sv
 vvp tb/tbg.vvp
 echo "  (the exhaustive run over every cell: tools/gen_noun_gen_hdl.py --full --out PATH, then vvp tb/tbg.vvp +vec=PATH)"
 

@@ -16,7 +16,7 @@ module tb;
     always #5 clk = ~clk;
 
     reg stem_we = 0; reg [5:0] stem_wa = 0; reg [7:0] stem_wd = 0;
-    reg start = 0; reg [5:0] stem_len = 0; reg [4:0] cls = 0; reg [3:0] case_sel = 0; reg [7:0] flags = 0;
+    reg start = 0; reg [5:0] stem_len = 0; reg [4:0] cls = 0; reg [3:0] case_sel = 0; reg [10:0] flags = 0;
     wire busy, out_valid, out_last, surf_end, all_done; wire [7:0] out_byte;
 
     tamil_noun_gen dut (.clk(clk), .rst(rst), .stem_we(stem_we), .stem_wa(stem_wa), .stem_wd(stem_wd),
@@ -72,7 +72,7 @@ module tb;
                     @(posedge clk); stem_we <= 1; stem_wa <= i; stem_wd <= stem_b[i];
                 end
                 @(posedge clk); stem_we <= 0;
-                stem_len <= slen[5:0]; cls <= scls[4:0]; case_sel <= scase[3:0]; flags <= sflags[7:0];
+                stem_len <= slen[5:0]; cls <= scls[4:0]; case_sel <= scase[3:0]; flags <= sflags[10:0];
                 @(posedge clk); start <= 1; @(posedge clk); start <= 0;
                 // collect
                 nhw = 0; cur_l = 0;
@@ -101,7 +101,7 @@ module tb;
                 else begin
                     fail = fail + 1;
                     if (fail <= 8) begin
-                        $write("  MISMATCH cell %0d: class %0d case %0d flags %02h stem", cells, scls, scase, sflags[7:0]);
+                        $write("  MISMATCH cell %0d: class %0d case %0d flags %03h stem", cells, scls, scase, sflags[10:0]);
                         for (i = 0; i < slen; i = i + 1) $write(" %02h", stem_b[i]);
                         $display("  expected %0d forms, hardware %0d", nexp, nhw);
                     end

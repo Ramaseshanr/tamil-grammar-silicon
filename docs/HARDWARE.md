@@ -75,23 +75,23 @@ is `phon_rules.derive()` restated in the shape the hardware needs. It uses the c
 1. copy the stem into a working buffer;
 2. **stem form:** drop the class's truncation and join its linking increment (அத்து, ற்று, டு, று: Naṉṉūl 244 and 164), or turn a
    final ன் into ர் before கள் (P8) — the 20 class rows;
-3. **endings:** up to seven slots (plural, the சாரியை இன், case உருபு, benefactive, comparative, focus, sandhi). At each slot it
+3. **endings:** up to eight slots (plural, the சாரியை இன், case உருபு, benefactive, comparative, a vowel particle உம் ஏ ஓ ஆ, focus, sandhi). At each slot it
    counts the options the current state allows, since Naṉṉūl 243 lets a சாரியை come, drop out or vary, and walks them like an
    odometer, so every combination is emitted once;
 4. **each ending is joined at the seam** by the juncture unit (227 hardening, 164 உ-drop, assimilation, glides, doubling). The
    dative after இ, ஈ or ஐ is கு with no உ (P12, Arden 110);
 5. stream the form out, then step the odometer.
 
-The two ROMs (the class table and the endings) are generated from `phon_rules.STEMFORM` and `phon_rules.MORPH`, never retyped.
+The generator is in two parts: `tamil_noun_gen_core.sv` takes the class values (truncation, increment, gemination, doubled final, two switches) as an input, and `tamil_noun_gen.sv` supplies them from a class index. The two ROMs (the class table and the endings) are generated from `phon_rules.STEMFORM` and `phon_rules.MORPH`, never retyped.
 
 **Verification.** `hdl/tb/tb_noun_gen.v` loads each stem, runs the generator, collects every form it streams, and requires the
 *set* of forms to equal `phon_rules.derive()` for that cell. The software model `tools/noun_gen_model.py` is identical to the
-derivation on all 1,552,669 encodable cells. In hardware the sample gate (every class-and-bundle pair plus random cells, 3,992 cells, 9,342 forms) runs inside `build.sh`, and the
-exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL: 3,576,724 forms, the set of forms
+derivation on all 1,552,669 encodable cells, and on all 3,148,848 encodable cells with a vowel particle added, which the grid does not list (`--particles`). In hardware the sample gate (every class-and-bundle pair plus random cells, 4,672 cells, 11,049 forms) runs inside `build.sh`, and the
+exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL, and 30,620 cells with a vowel particle (up to 30 stems of every class, bundle and particle): 3,659,874 forms, the set of forms
 equal to `phon_rules.derive()` in every cell, no mismatch** (about ten minutes on ten cores, in simulation).
 
-**Synthesis (Yosys, ECP5): 860 LUT4, 196 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
-the whole generator is 1,274 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **54.9 MHz** (it fails a 100 MHz target:
+**Synthesis (Yosys, ECP5): 937 LUT4, 205 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
+the whole generator is 1,353 logic cells, about 1.6% of an LFE5U-85F, at a maximum clock, after routing, of **51.2 MHz** (a run at a 55 MHz target once gave 52.9) (it fails a 100 MHz target:
 the stem-form and seam arithmetic is one long combinational path, and it has not been pipelined).
 
 **What it is not.** Its inputs are decoded fields (the case, plural, benefactive, comparative, focus and sandhi bits), not the TF1 register
