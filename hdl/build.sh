@@ -36,6 +36,13 @@ iverilog -g2012 -I. -o tb/tbg.vvp tb/tb_noun_gen.v rtl/tamil_noun_gen.sv rtl/tam
 vvp tb/tbg.vvp
 echo "  (the exhaustive run over every cell: tools/gen_noun_gen_hdl.py --full --out PATH, then vvp tb/tbg.vvp +vec=PATH)"
 
+stage "6b. FORMAL: the juncture unit equals its flat specification for every input, and the verse properties hold (SymbiYosys, z3)"
+if command -v sby >/dev/null 2>&1 && command -v z3 >/dev/null 2>&1; then
+  (cd formal && sby -f join.sby 2>&1 | grep -E "summary: successful proof|DONE" )
+else
+  echo "  (skipped: sby and z3 are not installed)"
+fi
+
 stage "7. synthesize for ECP5"
 echo "  --- tamil_noun_class (the decision) ---"
 yosys -s syn/ecp5.ys 2>&1 | sed -n '/=== tamil_noun_class ===/,/design hierarchy/p' \

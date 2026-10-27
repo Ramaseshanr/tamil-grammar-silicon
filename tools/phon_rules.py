@@ -27,6 +27,7 @@ import tlp1 as T
 # VARIANTS=all  generate every alternative the phonology licenses (default)
 # VARIANTS=min  generate one form per cell -- the precision/recall trade-off, measured
 VARIANTS = os.environ.get("TAMILOS_PHON_VARIANTS", "all")
+P12_ON = os.environ.get("TAMILOS_NO_P12") is None     # set TAMILOS_NO_P12=1 to leave P12 out and see what it fixed
 GRID = ROOT / os.environ.get("TAMILOS_GRID", "data/derived/nouns_grid_final.tsv")
 
 B = lambda s: T.encode(s)
@@ -344,9 +345,9 @@ def derive_labeled(stem, cls, feat):
                 # words it has not listed a சாரியை is not obligatory]; Arden 110 says where: after a
                 # base ending in இ, ஈ or ஐ -- குழந்தைக்கு, not குழந்தையுக்கு.
                 g = gem                         # the class decides whether a வல்லினம் doubles ...
-                if kind == "dat" and a != "உக்கு" and _arden110(cur):
+                if kind == "dat" and a != "உக்கு" and P12_ON and _arden110(cur):
                     continue                    # after இ ஈ ஐ the dative is கு only: no இற்கு (குழந்தையிற்கு, தந்தையிற்கு are not forms)
-                if kind == "dat" and a == "உக்கு" and _arden110(cur):
+                if kind == "dat" and a == "உக்கு" and P12_ON and _arden110(cur):
                     # ... but this உருபு is a வேற்றுமை one, and it doubles after a vowel whatever the
                     # class (மொழிக்கு), where the plural கள் is not (மொழிகள்).
                     FIRED["P12 dative-ku"] += 1; a = "கு"; g = True

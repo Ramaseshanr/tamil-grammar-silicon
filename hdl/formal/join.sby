@@ -1,0 +1,20 @@
+# Formal check of the juncture unit: every input, no simulation vectors.
+#   cd hdl/formal && sby -f join.sby
+[options]
+mode prove
+depth 1
+
+[engines]
+smtbmc z3
+
+[script]
+read_verilog -sv -formal rtl/tamil_join.sv
+read_verilog -sv -formal formal/join_spec.sv
+read_verilog -sv -formal formal/join_equiv.sv
+prep -top join_equiv
+
+[files]
+gen/tamil_phon.vh ../gen/tamil_phon.vh
+rtl/tamil_join.sv ../rtl/tamil_join.sv
+formal/join_spec.sv join_spec.sv
+formal/join_equiv.sv join_equiv.sv

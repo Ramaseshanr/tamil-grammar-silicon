@@ -1,0 +1,4 @@
+# One rule alone (Naṉṉūl 164, branch P5 of tamil_join.sv).
+read_verilog syn/p5_rule.v
+synth_ecp5 -noabc9 -flatten -top p5_rule
+stat
