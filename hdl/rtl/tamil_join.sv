@@ -44,8 +44,8 @@ module tamil_join (
         if (clitic) begin
             // P10  a particle doubles its initial வல்லினம் after a vowel; no புணரியல் otherwise
             if (dbl && b_val && a_v) begin ins_v = 1'b1; ins_b = b; end
-        end else if (inc && a_v && (a == b)) begin
-            // P9  coalescence: two identical vowels become one (மர + அத்து -> மரத்து)  [Naṉṉūl 252: அத்தின் அகரம் அகர முனை இல்லை]
+        end else if (inc && a == `A && b == `A) begin
+            // P9  coalescence: the அ that begins an increment after an அ is dropped (மர + அத்து -> மரத்து)  [Naṉṉūl 252: அத்தின் அகரம் அகர முனை இல்லை]
             drop_right = 1'b1;
         end else if (pada && !b_pada) begin
             // at a pada juncture only ச் ட் த் ப் trigger anything

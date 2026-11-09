@@ -30,7 +30,7 @@ module join_spec (
 
     // the guards, in priority order
     wire g_clitic = clitic;                                          // a clitic: only P10 can act, nothing after it is reached
-    wire g_p9     = inc && a_v && (a == b);                          // Naṉṉūl 252: coalescence
+    wire g_p9     = inc && a == `A && b == `A;                       // Naṉṉūl 252: coalescence
     wire g_pada   = pada && !b_pada;                                 // at a word boundary only ச் ட் த் ப் act
     wire g_p5     = kural && (a == `U) && b_v && a2m;                // Naṉṉūl 164: the short உ drops before a vowel
     wire g_p6     = a_v && b_v;                                      // a glide between two vowels

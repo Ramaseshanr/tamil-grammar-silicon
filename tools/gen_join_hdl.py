@@ -27,7 +27,7 @@ import phon_rules as P
 OUT_VH = ROOT / "hdl/gen/tamil_phon.vh"
 OUT_VEC = ROOT / "hdl/vectors/join_vectors.hex"
 
-CONSTS = {"CA": P.CA, "TTA": P.TTA, "THA": P.THA, "PA": P.PA, "MA": P.MA, "U": P.U,
+CONSTS = {"A": T.A, "CA": P.CA, "TTA": P.TTA, "THA": P.THA, "PA": P.PA, "MA": P.MA, "U": P.U,
           "YA": P.YA, "VA": P.VA, "LA": P.LA, "LLA": P.LLA, "NA": P.NA, "RA": P.RA}
 FLAGS = ("pada", "gem", "clitic", "kural", "inc", "dbl", "mono", "nohard")   # bit 7 .. bit 0
 SENT = 0x77                                                                  # a byte no rule mentions

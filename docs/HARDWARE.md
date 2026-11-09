@@ -46,7 +46,7 @@ form loses its first byte.
 
 | rule | what it does | source |
 |---|---|---|
-| P9 | two identical vowels become one (மர + அத்து → மரத்து) | Naṉṉūl 252 (அத்து is listed in 244) |
+| P9 | the அ that begins an increment after an அ is dropped (மர + அத்து → மரத்து) | Naṉṉūl 252 (அத்து is listed in 244) |
 | P5 | a குற்றியலுகரம் drops before a vowel | Naṉṉūl 164 |
 | P6 | a glide fills a vowel-vowel seam, ய் after i, e, ai, otherwise வ் | உடம்படுமெய் |
 | P3 | a nasal is lost at a word boundary | |
@@ -65,7 +65,7 @@ the seam that the rules use, and all 256 flag settings (627,200 vectors), plus 3
 **927,200 of 927,200 agree**. Comparing whole strings, not output bits, matters: when the two bytes at the seam are equal, dropping the
 left one and dropping the right one give the same string.
 
-**Synthesis (Yosys, ECP5): 85 LUT4, no flip-flops**, with 25 PFUMX and 14 L6MUX21. It is combinational, so there is no clock figure yet. One rule alone, Naṉṉūl 164 (a short உ after a consonant drops before a vowel; twelve input bits), is 5 LUT4 and a multiplexer (`hdl/syn/ecp5_p5.ys`); a tree of four tables is the least twelve inputs can take, and the exact packing depends on the Yosys version (0.67 packed it into four).
+**Synthesis (Yosys, ECP5): 67 LUT4, no flip-flops**, with 17 PFUMX and 4 L6MUX21 (85, 25 and 14 while P9 was stated for any two equal vowels; narrowing it to அ + அ, the case the verse names, removed the eight-bit comparison of the two bytes). It is combinational, so there is no clock figure yet. One rule alone, Naṉṉūl 164 (a short உ after a consonant drops before a vowel; twelve input bits), is 5 LUT4 and a multiplexer (`hdl/syn/ecp5_p5.ys`); a tree of four tables is the least twelve inputs can take, and the exact packing depends on the Yosys version (0.67 packed it into four).
 
 ## The noun generator: a stem in, every licensed form out
 
@@ -92,8 +92,8 @@ derivation on all 1,552,669 encodable cells, and on all 3,148,848 encodable cell
 exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL, and 30,620 cells with a vowel particle (up to 30 stems of every class, bundle and particle): 3,659,874 forms, the set of forms
 equal to `phon_rules.derive()` in every cell, no mismatch** (about ten minutes on ten cores, in simulation).
 
-**Synthesis (Yosys, ECP5): 889 LUT4, 205 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
-the whole generator is 1,285 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **52.2 MHz** (it fails a 100 MHz target:
+**Synthesis (Yosys, ECP5): 891 LUT4, 205 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
+the whole generator is 1,287 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **60.5 MHz** (it fails a 100 MHz target:
 the stem-form and seam arithmetic is one long combinational path, and it has not been pipelined).
 
 **A proof for the juncture unit.** The juncture unit is combinational, with 25 input bits, so it can be checked by a solver
@@ -135,7 +135,7 @@ This is the classifier only. The rest of the noun datapath is specified, not bui
 | TLP1 codec (UTF-8 to phoneme) | not started |
 | stem-form unit (drop at most 1, insert at most 4 phonemes) | built inside the generator |
 | suffix ROM | built inside the generator (generated from `phon_rules.MORPH`) |
-| juncture rules (the seam) | built, verified, synthesized: 85 LUT4 |
+| juncture rules (the seam) | built, verified, synthesized: 67 LUT4 |
 | concatenate and emit (the sequencer) | built: `tamil_noun_gen` |
 | a generator driven by the TF1 register, with the classifier in front | not started |
 

@@ -77,10 +77,12 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
         return bytes(left) + bytes(right)
     a, b = left[-1], right[0]
 
-    # P9  coalescence: two identical vowels across a seam become one
+    # P9  coalescence: the அ that begins an increment (அத்து) after a word ending in அ is absent
     #     (மர + அத்து -> மரத்து: the அ of the சாரியை absorbs)
     #     [Naṉṉūl 252; Tolkāppiyam புணரியல் 23: அத்தின் அகரம் அகர முனை இல்லை]
-    if inc and is_v(a) and a == b:
+    #     Narrowed from "any two equal vowels" to அ + அ: the verse names the அகரம், and no class
+    #     in the data meets any other equal pair at an increment.
+    if inc and a == T.A and b == T.A:
         FIRED["P9 coalesce"] += 1
         return bytes(left) + bytes(right[1:])
 

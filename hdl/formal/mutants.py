@@ -16,7 +16,8 @@ MUTANTS = {
     "P2 ignores the nohard flag":              ("hard_a && b_val && !pada && !nohard", "hard_a && b_val && !pada"),
     "the glide swaps ய் and வ்":                ("ins_b = front ? `YA : `VA;", "ins_b = front ? `VA : `YA;"),
     "P3 happens away from a pada juncture":    ("end else if (pada && a_mel) begin", "end else if (a_mel) begin"),
-    "P9 coalesces without the increment":      ("end else if (inc && a_v && (a == b)) begin", "end else if (a_v && (a == b)) begin"),
+    "P9 coalesces without the increment":      ("end else if (inc && a == `A && b == `A) begin", "end else if (a == `A && b == `A) begin"),
+    "P9 coalesces any equal vowels":           ("end else if (inc && a == `A && b == `A) begin", "end else if (inc && a_v && (a == b)) begin"),
     "P2 hardens to the wrong class":           ("ins_b = (a & 8'h07) | 8'h40;", "ins_b = (a & 8'h07) | 8'h50;"),
     "P11 doubles the wrong sound":             ("ins_v = 1'b1; ins_b = a;\n        end else if (a_v && b_val && gem", "ins_v = 1'b1; ins_b = b;\n        end else if (a_v && b_val && gem"),
 }

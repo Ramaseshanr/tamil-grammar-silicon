@@ -34,11 +34,11 @@ module join_equiv (
         // Naṉṉūl 164 (உயிர்வரின் உக்குறள் மெய்விட்டு ஓடும்): a short உ after a consonant drops before a vowel
         if (!clitic && !inc && !(pada && !b_pada) && kural && a == `U && b_v && a2m)
             assert (dl && !iv && !dr);
-        // Naṉṉūl 252 (அத்தின் அகரம் அகர முனை இல்லை): two equal vowels merge, the second is dropped
-        if (!clitic && inc && a_v && a == b)
+        // Naṉṉūl 252 (அத்தின் அகரம் அகர முனை இல்லை): the அ of an increment after an அ is dropped
+        if (!clitic && inc && a == `A && b == `A)
             assert (dr && !dl && !iv);
         // the glide between two vowels (Naṉṉūl 162): ய் after i e ai, otherwise வ்
-        if (!clitic && a_v && b_v && !(inc && a == b) && !(pada && !b_pada) && !(kural && a == `U && a2m))
+        if (!clitic && a_v && b_v && !(inc && a == `A && b == `A) && !(pada && !b_pada) && !(kural && a == `U && a2m))
             assert (iv && !dl && !dr && ib == (front ? `YA : `VA));
         // a clitic acts only by doubling its initial வல்லினம் after a vowel (the doubled sound is b itself)
         if (clitic) assert (!dl && !dr);
