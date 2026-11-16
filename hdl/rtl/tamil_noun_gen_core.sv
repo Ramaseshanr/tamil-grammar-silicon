@@ -95,8 +95,9 @@ module tamil_noun_gen_core (
     wire [7:0] last_b2 = (blen < 2)  ? 8'h00 : buff[blen - 7'd2];
     wire       a2m = (blen >= 2) && (last_b2[7:6] == 2'b01);
     wire       j_dl, j_iv, j_dr; wire [7:0] j_ib;
-    tamil_join seam (.a(last_b), .a2m(a2m), .b(mb[0]), .flags(mflags),
-                     .drop_left(j_dl), .ins_v(j_iv), .ins_b(j_ib), .drop_right(j_dr));
+    wire       j_rv; wire [7:0] j_rb;                       // the verb seam's replacement: unused, the verb flag is off
+    tamil_join seam (.a(last_b), .a2m(a2m), .b(mb[0]), .flags({1'b0, mflags}),
+                     .drop_left(j_dl), .ins_v(j_iv), .ins_b(j_ib), .drop_right(j_dr), .rep_v(j_rv), .rep_b(j_rb));
 
     // ---------------------------------------------------------------- slots
     reg        s_act;  reg [4:0] s_kind;

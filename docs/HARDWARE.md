@@ -55,17 +55,21 @@ form loses its first byte.
 | P11 | the final ஒற்று doubles before a vowel உருபு (monosyllables) | |
 | P4 | a வல்லினம் doubles after a vowel | |
 | P10 | a particle doubles its initial வல்லினம் | |
+| V237 | verbs only: after ன் ல் a following த் becomes ற், after ண் ள் it becomes ட் (the unit says so with `rep_v`/`rep_b`) | Naṉṉūl 237 |
+| V224 | verbs only: after ய் ர் ழ் a following க் ச் த் ப் is doubled, when `gem` is set | Naṉṉūl 224 |
+
+V237 and V224 are switched on by `flags[8]`, `verb`. With it off, as for every noun, the unit is the nine rules above and nothing else.
 
 P8 (ன் → ர் before கள்) and P12 (the dative கு after இ, ஈ, ஐ) are stem-form and morpheme-selection rules, not seam rules; they
 belong to the next blocks.
 
 **Verification.** `hdl/tb/tb_join.v` applies the unit's outputs to a left and a right form and compares the whole resulting string
 with `phon_rules.join()`, for every combination of the 35 valid phonemes at each side of the seam, the one fact about the byte before
-the seam that the rules use, and all 256 flag settings (627,200 vectors), plus 300,000 seeded random vectors over all 256 byte values:
-**927,200 of 927,200 agree**. Comparing whole strings, not output bits, matters: when the two bytes at the seam are equal, dropping the
+the seam that the rules use, and all 512 flag settings (1,254,400 vectors), plus 300,000 seeded random vectors over all 256 byte values:
+**1,554,400 of 1,554,400 agree**. Comparing whole strings, not output bits, matters: when the two bytes at the seam are equal, dropping the
 left one and dropping the right one give the same string.
 
-**Synthesis (Yosys, ECP5): 67 LUT4, no flip-flops**, with 17 PFUMX and 4 L6MUX21 (85, 25 and 14 while P9 was stated for any two equal vowels; narrowing it to அ + அ, the case the verse names, removed the eight-bit comparison of the two bytes). It is combinational, so there is no clock figure yet. One rule alone, Naṉṉūl 164 (a short உ after a consonant drops before a vowel; twelve input bits), is 5 LUT4 and a multiplexer (`hdl/syn/ecp5_p5.ys`); a tree of four tables is the least twelve inputs can take, and the exact packing depends on the Yosys version (0.67 packed it into four).
+**Synthesis (Yosys, ECP5): 118 LUT4, no flip-flops**, with 40 PFUMX and 18 L6MUX21, the nine noun rules and the two verb seams together. Without the verb seams it is 67 LUT4, 17 PFUMX and 4 L6MUX21 (85, 25 and 14 while P9 was stated for any two equal vowels; narrowing it to அ + அ, the case the verse names, removed the eight-bit comparison of the two bytes). In the noun generator the verb flag is tied off, so the verb logic costs nothing there. It is combinational, so there is no clock figure yet. One rule alone, Naṉṉūl 164 (a short உ after a consonant drops before a vowel; twelve input bits), is 5 LUT4 and a multiplexer (`hdl/syn/ecp5_p5.ys`); a tree of four tables is the least twelve inputs can take, and the exact packing depends on the Yosys version (0.67 packed it into four).
 
 ## The noun generator: a stem in, every licensed form out
 
@@ -92,17 +96,17 @@ derivation on all 1,552,669 encodable cells, and on all 3,148,848 encodable cell
 exhaustive gate, `hdl/gen_exhaustive.sh`, drives **all 1,552,669 cells of the reference through the RTL, and 30,620 cells with a vowel particle (up to 30 stems of every class, bundle and particle): 3,659,874 forms, the set of forms
 equal to `phon_rules.derive()` in every cell, no mismatch** (about ten minutes on ten cores, in simulation).
 
-**Synthesis (Yosys, ECP5): 891 LUT4, 205 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
-the whole generator is 1,287 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **60.5 MHz** (it fails a 100 MHz target:
+**Synthesis (Yosys, ECP5): 861 LUT4, 205 flip-flops, and 44 distributed-RAM blocks** for the two 64-byte buffers. After place and route
+the whole generator is 1,257 logic cells, about 1.5% of an LFE5U-85F, at a maximum clock, after routing, of **58.9 MHz** (it fails a 100 MHz target:
 the stem-form and seam arithmetic is one long combinational path, and it has not been pipelined).
 
-**A proof for the juncture unit.** The juncture unit is combinational, with 25 input bits, so it can be checked by a solver
+**A proof for the juncture unit.** The juncture unit is combinational, with 26 input bits, so it can be checked by a solver
 for every input, not only for the test vectors. `hdl/formal/join_spec.sv` states the rules a second way (one guard per rule, a
 rule fires when its guard holds and no earlier guard does), and `hdl/formal/join_equiv.sv` asserts that `tamil_join.sv` gives the
-same four outputs as that specification for all 2^25 inputs. It also asserts the statements of three verses as properties of the
-RTL (Naṉṉūl 164, 252 and the glide, 162) and a few facts the rules never violate. `cd hdl/formal && sby -f join.sby` proves it in about a second
-(SymbiYosys, z3). `hdl/formal/mutants.py` breaks the RTL seven ways and requires the proof to fail each time; it does (7 of 7). The
-specification itself is held to the Python by the same 927,200 vectors the RTL passes. This proves the RTL equals a second
+same six outputs as that specification for all 2^26 inputs. It also asserts the statements of five verses as properties of the
+RTL (Naṉṉūl 164, 252, 237, 224 and the glide, 162) and a few facts the rules never violate. `cd hdl/formal && sby -f join.sby` proves it in about a second
+(SymbiYosys, z3). `hdl/formal/mutants.py` breaks the RTL twelve ways and requires the proof to fail each time; it does (12 of 12). The
+specification itself is held to the Python by the same 1,554,400 vectors the RTL passes. This proves the RTL equals a second
 statement of the rules; it does not prove the rules are the grammar, and it covers the juncture unit only, not the sequencer.
 
 **What it is not.** Its inputs are decoded fields (the case, plural, benefactive, comparative, focus and sandhi bits), not the TF1 register
@@ -135,7 +139,7 @@ This is the classifier only. The rest of the noun datapath is specified, not bui
 | TLP1 codec (UTF-8 to phoneme) | not started |
 | stem-form unit (drop at most 1, insert at most 4 phonemes) | built inside the generator |
 | suffix ROM | built inside the generator (generated from `phon_rules.MORPH`) |
-| juncture rules (the seam) | built, verified, synthesized: 67 LUT4 |
+| juncture rules (the seam) | built, verified, synthesized: 118 LUT4 (67 for the noun rules alone) |
 | concatenate and emit (the sequencer) | built: `tamil_noun_gen` |
 | a generator driven by the TF1 register, with the classifier in front | not started |
 

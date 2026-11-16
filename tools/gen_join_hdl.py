@@ -27,9 +27,10 @@ import phon_rules as P
 OUT_VH = ROOT / "hdl/gen/tamil_phon.vh"
 OUT_VEC = ROOT / "hdl/vectors/join_vectors.hex"
 
-CONSTS = {"A": T.A, "CA": P.CA, "TTA": P.TTA, "THA": P.THA, "PA": P.PA, "MA": P.MA, "U": P.U,
-          "YA": P.YA, "VA": P.VA, "LA": P.LA, "LLA": P.LLA, "NA": P.NA, "RA": P.RA}
-FLAGS = ("pada", "gem", "clitic", "kural", "inc", "dbl", "mono", "nohard")   # bit 7 .. bit 0
+CONSTS = {"A": T.A, "KA": P.KA, "CA": P.CA, "TTA": P.TTA, "THA": P.THA, "PA": P.PA, "MA": P.MA, "U": P.U,
+          "YA": P.YA, "VA": P.VA, "LA": P.LA, "LLA": P.LLA, "NA": P.NA, "RA": P.RA,
+          "RRA": P.RRA, "NNA": P.NNA, "ZHA": P.ZHA}
+FLAGS = ("verb", "pada", "gem", "clitic", "kural", "inc", "dbl", "mono", "nohard")   # bit 8 .. bit 0
 SENT = 0x77                                                                  # a byte no rule mentions
 
 
@@ -46,19 +47,30 @@ def valid_phonemes():
 
 
 def ops(a, a2m, b, flags):
-    """phon_rules.join() on [a2, a] + [b, SENT], parsed into (drop_left, ins, drop_right)."""
-    kw = {n: bool((flags >> (7 - i)) & 1) for i, n in enumerate(FLAGS)}
+    """phon_rules.join() on [a2, a] + [b, SENT], parsed into (drop_left, ins, drop_right, replacement).
+
+    The unit's outputs: drop the left's last byte or not, insert at most one byte, then either drop the right's
+    first byte or keep it, or replace it (rep_v/rep_b: Naṉṉūl 237, which turns a த் into ற் or ட்)."""
+    kw = {n: bool((flags >> (8 - i)) & 1) for i, n in enumerate(FLAGS)}
     a2 = 0x40 if a2m else 0x00                       # க் (a மெய்) or அ (not)
     left, right = bytes([a2, a]), bytes([b, SENT])
     res = P.join(left, right, **kw)
-    for dl, dr in sorted(itertools.product((0, 1, 2), (0, 1)), key=lambda x: (x[0] + x[1], x)):
-        pre, suf = left[:2 - dl], right[dr:]
-        if res.startswith(pre) and res.endswith(suf) and len(res) >= len(pre) + len(suf):
-            ins = res[len(pre):len(res) - len(suf)]
-            if len(ins) <= 1 and dl <= 1:
-                return dl, (ins[0] if ins else None), dr
-    raise SystemExit(f"join() result not expressible as one drop, one insert, one drop: "
-                     f"a={a:02x} a2m={a2m} b={b:02x} flags={flags:02x} -> {res.hex()}")
+    for dl in (0, 1):
+        pre = left[:2 - dl]
+        if not res.startswith(pre):
+            continue
+        rest = res[len(pre):]
+        for dr in (0, 1):                             # keep or drop the right's first byte
+            suf = right[dr:]
+            if rest.endswith(suf) and len(rest) - len(suf) in (0, 1):
+                ins = rest[:len(rest) - len(suf)]
+                return dl, (ins[0] if ins else None), dr, None
+        suf = right[1:]                               # replace the right's first byte
+        if rest.endswith(suf) and len(rest) - len(suf) in (1, 2):
+            head = rest[:len(rest) - len(suf)]
+            return dl, (head[0] if len(head) == 2 else None), 0, head[-1]
+    raise SystemExit(f"join() result not expressible by the unit's outputs: "
+                     f"a={a:02x} a2m={a2m} b={b:02x} flags={flags:03x} -> {res.hex()}")
 
 
 def line(a, a2m, b, flags):
@@ -67,11 +79,11 @@ def line(a, a2m, b, flags):
     The test applies the unit's outputs to those same strings and compares whole results, not the
     four output bits: when the two bytes at the seam are equal, dropping the left one and dropping the
     right one give the same string, and both are correct."""
-    ops(a, a2m, b, flags)                       # must be expressible as one drop, one insert, one drop
-    kw = {n: bool((flags >> (7 - i)) & 1) for i, n in enumerate(FLAGS)}
+    ops(a, a2m, b, flags)                       # must be expressible by the unit's outputs
+    kw = {n: bool((flags >> (8 - i)) & 1) for i, n in enumerate(FLAGS)}
     res = P.join(bytes([0x40 if a2m else 0x00, a]), bytes([b, SENT]), **kw)
     r = list(res) + [0] * (5 - len(res))
-    return f"{a:02x} {a2m:x} {b:02x} {flags:02x} {len(res):x} " + " ".join(f"{x:02x}" for x in r) + "\n"
+    return f"{a:02x} {a2m:x} {b:02x} {flags:03x} {len(res):x} " + " ".join(f"{x:02x}" for x in r) + "\n"
 
 
 def main():
@@ -83,11 +95,11 @@ def main():
     V = valid_phonemes()
     n = 0
     with OUT_VEC.open("w", encoding="utf-8") as f:
-        for a, a2m, b, fl in itertools.product(V, (0, 1), V, range(256)):
+        for a, a2m, b, fl in itertools.product(V, (0, 1), V, range(512)):
             f.write(line(a, a2m, b, fl)); n += 1
         rng = random.Random(20261020)
         for _ in range(300_000):
-            f.write(line(rng.randrange(256), rng.randrange(2), rng.randrange(256), rng.randrange(256))); n += 1
+            f.write(line(rng.randrange(256), rng.randrange(2), rng.randrange(256), rng.randrange(512))); n += 1
     print(f"{len(V)} valid phonemes; wrote {n:,} vectors -> {OUT_VEC.relative_to(ROOT)}")
     print(f"wrote {OUT_VH.relative_to(ROOT)}")
 

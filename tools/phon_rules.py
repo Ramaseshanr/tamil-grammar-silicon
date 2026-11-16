@@ -59,7 +59,7 @@ def is_mel(b): return T.is_mellinam(b)
 FIRED = collections.Counter()
 
 def join(left, right, pada=False, gem=False, clitic=False, kural=False,
-         inc=False, dbl=False, mono=False, nohard=False):
+         inc=False, dbl=False, mono=False, nohard=False, verb=False):
     """Apply the phonemic juncture rules where two morphs meet.
 
     pada=True   a word boundary (the +sandhi* bundles): a stem-final nasal is lost.
@@ -67,6 +67,10 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
     kural=True  the left form ends in a குற்றியலுகரம் -- an enunciative உ that
                 drops before a vowel.  A முற்றியலுகரம் (பசு) does not: it takes
                 a உடம்படுமெய் instead [Naṉṉūl 162].  Naṉṉūl 94 says which உகரம் is a குற்றியலுகரம்; 164 drops it.
+    verb=True   the seams of a verb stem and its marker (tools/verb_gen.py), two more rules and nothing else changes:
+                237  after ன் ல் a following த் becomes ற், after ண் ள் it becomes ட்;
+                224  after ய் ர் ழ் a following க் ச் த் ப் is doubled when gem is set (and stays as it is when not).
+                Off for nouns, whose outputs are unchanged.
     """
     if not left:  return bytes(right)
     if not right: return bytes(left)
@@ -76,6 +80,14 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
             return bytes(left) + bytes([right[0]]) + bytes(right)
         return bytes(left) + bytes(right)
     a, b = left[-1], right[0]
+
+    # V237 (verbs): after ன் ல் a following த் becomes ற், after ண் ள் it becomes ட்
+    #     [Naṉṉūl 237: னலமுன் றனவும் ணளமுன் டணவும் ஆகும் தநக்கள் ஆயும் காலே]
+    if verb and b == THA:
+        if a in (NA, LA):
+            FIRED["V237 th-after-nasal"] += 1; right = bytes([RRA]) + bytes(right[1:]); b = RRA
+        elif a in (NNA, LLA):
+            FIRED["V237 th-after-nasal"] += 1; right = bytes([TTA]) + bytes(right[1:]); b = TTA
 
     # P9  coalescence: the அ that begins an increment (அத்து) after a word ending in அ is absent
     #     (மர + அத்து -> மரத்து: the அ of the சாரியை absorbs)
@@ -93,7 +105,7 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
     # P5  hiatus: a குற்றியலுகரம் drops before a vowel
     if kural and a == U and is_v(b) and len(left) >= 2 and T.is_mey(left[-2]):
         FIRED["P5 hiatus"] += 1
-        return join(left[:-1], right, pada, gem, clitic, False)
+        return join(left[:-1], right, pada, gem, clitic, False, verb=verb)
 
     # P6  உடம்படுமெய்: a glide fills a vowel-vowel juncture
     if is_v(a) and is_v(b):
@@ -130,6 +142,12 @@ def join(left, right, pada=False, gem=False, clitic=False, kural=False,
     # P4  வல்லினம் மிகல்: the suffix-initial வல்லினம் doubles after a vowel
     if is_v(a) and is_val(b) and gem and not pada:
         FIRED["P4 geminate"] += 1
+        return bytes(left) + bytes([b]) + bytes(right)
+
+    # V224 (verbs): after ய் ர் ழ் a following க் ச் த் ப் is doubled (when gem is set)
+    #     [Naṉṉūl 224: ய ர ழ முன்னர்க் க ச த ப அல்வழி இயல்பும் மிகலும் ஆகும்]
+    if verb and gem and not pada and a in (YA, RA, ZHA) and b in (KA, CA, THA, PA):
+        FIRED["V224 verb-geminate"] += 1
         return bytes(left) + bytes([b]) + bytes(right)
 
     return bytes(left) + bytes(right)
@@ -563,6 +581,7 @@ def run_count():
     nrules = len(set(re.findall(r'FIRED\["(P\d+) ', src)))
     print("\n  phonemic (tools/phon_rules.py, over TLP1)")
     print(f"    labelled rules (P-numbers in source) {nrules:3d}")
+    print(f"    (verb seams, counted apart: {len(set(re.findall(r'FIRED\[\"(V\d+) ', src)))} of them, 237 and 224)")
     print(f"    morphemes (உருபு + சாரியை + clitics) {morphs:4d}")
     print(f"    class rows x 4 parameters        {len(STEMFORM)*4:4d}")
     print(f"    TOTAL parameters                 {nrules + morphs + len(STEMFORM)*4:4d}")

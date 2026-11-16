@@ -7,13 +7,14 @@
 //   iverilog -g2012 -o tb/tbj.vvp tb/tb_join.v rtl/tamil_join.sv && vvp tb/tbj.vvp
 `timescale 1ns/1ps
 module tb;
-    reg  [7:0] a, b, flags;
+    reg  [7:0] a, b;
+    reg  [8:0] flags;
     reg        a2m;
-    wire       dl, iv, dr;
-    wire [7:0] ib;
+    wire       dl, iv, dr, rv;
+    wire [7:0] ib, rb;
 
     tamil_join dut (.a(a), .a2m(a2m), .b(b), .flags(flags),
-                    .drop_left(dl), .ins_v(iv), .ins_b(ib), .drop_right(dr));
+                    .drop_left(dl), .ins_v(iv), .ins_b(ib), .drop_right(dr), .rep_v(rv), .rep_b(rb));
 
     integer fd, got, n, pass, fail, k;
     reg [31:0] v_a, v_a2m, v_b, v_fl, e_n;
@@ -30,22 +31,22 @@ module tb;
         while (!$feof(fd)) begin
             got = $fscanf(fd, "%h %h %h %h %h %h %h %h %h %h\n", v_a, v_a2m, v_b, v_fl, e_n, e[0], e[1], e[2], e[3], e[4]);
             if (got == 10) begin
-                a = v_a[7:0]; a2m = v_a2m[0]; b = v_b[7:0]; flags = v_fl[7:0];
+                a = v_a[7:0]; a2m = v_a2m[0]; b = v_b[7:0]; flags = v_fl[8:0];
                 #1;
                 n = n + 1;
-                // apply the unit's four outputs to left = [a2, a], right = [b, SENT]
+                // apply the unit's outputs to left = [a2, a], right = [b, SENT]
                 hn = 0;
                 hwres[hn] = a2m ? 8'h40 : 8'h00; hn = hn + 1;
                 if (!dl) begin hwres[hn] = a; hn = hn + 1; end
                 if (iv)  begin hwres[hn] = ib; hn = hn + 1; end
-                if (!dr) begin hwres[hn] = b; hn = hn + 1; end
+                if (!dr) begin hwres[hn] = rv ? rb : b; hn = hn + 1; end
                 hwres[hn] = SENT; hn = hn + 1;
                 same = (hn == e_n);
                 for (k = 0; k < 5; k = k + 1) if (k < hn && k < e_n && hwres[k] !== e[k][7:0]) same = 0;
                 if (!same) begin
                     fail = fail + 1;
                     if (fail <= 10)
-                        $display("  MISMATCH a=%02h a2m=%0b b=%02h flags=%02h : hw n=%0d %02h %02h %02h %02h %02h   py n=%0d %02h %02h %02h %02h %02h",
+                        $display("  MISMATCH a=%02h a2m=%0b b=%02h flags=%03h : hw n=%0d %02h %02h %02h %02h %02h   py n=%0d %02h %02h %02h %02h %02h",
                                  a, a2m, b, flags, hn, hwres[0], hwres[1], hwres[2], hwres[3], hwres[4],
                                  e_n, e[0][7:0], e[1][7:0], e[2][7:0], e[3][7:0], e[4][7:0]);
                 end else pass = pass + 1;
